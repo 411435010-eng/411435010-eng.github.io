@@ -1,1 +1,262 @@
-Hello world!
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>會飛的豬 — 個人網站</title>
+  <meta name="description" content="一個有會飛的豬的個人網站範例。HTML + CSS + 少量 JS，單檔即可使用。">
+  <style>
+    :root{
+      --bg:#87CEEB;
+      --cloud:#fff;
+      --accent:#ff6b81;
+      --card:rgba(255,255,255,0.85);
+      --glass:rgba(255,255,255,0.12);
+      --dark: #222;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,Roboto,system-ui,-apple-system,'Helvetica Neue',Arial;
+      background: linear-gradient(180deg,var(--bg) 0%, #b6e0ff 60%); color:var(--dark); min-height:100vh;}
+
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;background:var(--card);border-radius:12px;display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
+    .logo svg{width:36px;height:36px}
+    h1{font-size:18px;margin:0}
+
+    main{padding:24px;max-width:1100px;margin:0 auto}
+
+    .hero{position:relative;display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:center}
+    @media (max-width:880px){.hero{grid-template-columns:1fr;}
+      .controls{order:2}
+    }
+
+    .intro{background:var(--card);padding:24px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,0.06)}
+    .intro h2{margin-top:0}
+    .intro p{line-height:1.6}
+
+    .controls{padding:18px;background:linear-gradient(180deg,var(--glass), rgba(255,255,255,0.06));border-radius:12px;backdrop-filter:blur(6px)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:white;text-decoration:none;font-weight:600}
+
+    /* sky & clouds */
+    .sky{position:relative;height:360px;border-radius:14px;overflow:hidden;margin-top:18px}
+    .cloud{position:absolute;background:var(--cloud);border-radius:50px;opacity:0.95;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+    .cloud.c1{width:240px;height:80px;left:6%;top:24%}
+    .cloud.c2{width:160px;height:56px;left:50%;top:8%}
+    .cloud.c3{width:200px;height:68px;left:75%;top:44%}
+
+    /* flying pig container */
+    .stage{position:absolute;left:-20%;top:60%;width:140%;height:200px;pointer-events:none}
+    svg.pig{position:absolute;width:220px;height:140px;transform-origin:center center}
+
+    /* fly path */
+    @keyframes flyAcross{
+      0%{transform:translateX(-10%) translateY(40px) scale(0.9) rotate(-6deg)}
+      25%{transform:translateX(20%) translateY(-20px) scale(1) rotate(2deg)}
+      50%{transform:translateX(50%) translateY(-60px) scale(1.05) rotate(6deg)}
+      75%{transform:translateX(80%) translateY(-10px) scale(1) rotate(-2deg)}
+      100%{transform:translateX(110%) translateY(40px) scale(0.9) rotate(-6deg)}
+    }
+
+    @keyframes wingFlap{
+      0%{transform:translateY(0) rotate(0deg)}
+      50%{transform:translateY(-6px) rotate(18deg)}
+      100%{transform:translateY(0) rotate(0deg)}
+    }
+
+    .pig-fly{animation:flyAcross 9s linear infinite}
+    .wing{transform-origin:10px 10px;animation:wingFlap .35s ease-in-out infinite}
+
+    /* ground cards */
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
+    .card{background:var(--card);padding:16px;border-radius:12px}
+
+    footer{padding:22px;text-align:center;color:rgba(0,0,0,0.6)}
+
+    /* small flourish */
+    .follow-note{font-size:13px;color:rgba(0,0,0,0.6);margin-top:12px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <!-- small pig icon -->
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="12" fill="#fff"/>
+          <g transform="translate(6 12)">
+            <ellipse cx="22" cy="18" rx="12" ry="9" fill="#ffb6c1"/>
+            <circle cx="27" cy="14" r="2" fill="#222"/>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <h1>會飛的豬 — 薰的個人網站</h1>
+        <div style="font-size:13px;color:rgba(0,0,0,0.6)">設計師・程式愛好者・雲中漫步</div>
+      </div>
+    </div>
+    <nav>
+      <a class="btn" href="#about">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="intro">
+        <h2 id="about">嗨，我是 薰 ✨</h2>
+        <p>歡迎來到我的個人網站。這裡有一隻會飛的豬——牠喜歡在雲間巡航、帶來一點童趣與創意。如果你想要把這個網站變成你的作品集、簡歷或聯絡頁面，我可以幫你客製化。</p>
+
+        <div class="sky" role="img" aria-label="藍天，幾朵雲，和一隻會飛的豬">
+          <div class="cloud c1"></div>
+          <div class="cloud c2"></div>
+          <div class="cloud c3"></div>
+
+          <div class="stage" id="stage">
+            <!-- Inline SVG pig: body + wings animated -->
+            <svg class="pig pig-fly" viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <!-- shadow -->
+              <ellipse cx="110" cy="125" rx="42" ry="10" fill="rgba(0,0,0,0.08)"/>
+              <!-- body -->
+              <g transform="translate(20,20)">
+                <ellipse cx="80" cy="44" rx="48" ry="30" fill="#ffb6c1" stroke="#e78aa1" stroke-width="2"/>
+                <!-- ear -->
+                <path d="M40 16 q-6 -12 6 -18 q6 8 6 18" fill="#ff9fb0" stroke="#e78aa1"/>
+                <!-- eye -->
+                <circle cx="98" cy="36" r="4" fill="#222"/>
+                <!-- snout -->
+                <ellipse cx="116" cy="48" rx="12" ry="8" fill="#ff9fb0"/>
+                <circle cx="110" cy="46" r="1.6" fill="#b34a56"/>
+                <circle cx="122" cy="46" r="1.6" fill="#b34a56"/>
+
+                <!-- wings -->
+                <g transform="translate(14,8)">
+                  <g class="wing" id="wingL">
+                    <path d="M10 30 q-34 -10 -40 -28 q10 6 16 12 q10 8 24 14" fill="#fff" stroke="#f2f2f2" stroke-width="1" />
+                  </g>
+                </g>
+                <g transform="translate(110,6)">
+                  <g class="wing" id="wingR">
+                    <path d="M0 30 q34 -10 40 -28 q-10 6 -16 12 q-10 8 -24 14" fill="#fff" stroke="#f2f2f2" stroke-width="1" />
+                  </g>
+                </g>
+
+                <!-- tail -->
+                <path d="M28 56 q-6 6 -10 4 q6 -4 10 -8" fill="none" stroke="#e78aa1" stroke-width="3" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <h3>作品集</h3>
+            <p>放一些專案連結、截圖或 GitHub。</p>
+          </div>
+          <div class="card">
+            <h3>技能</h3>
+            <p>HTML, CSS, JavaScript, React, 設計與視覺化。</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="controls">
+        <h3>互動控制</h3>
+        <p class="follow-note">點擊按鈕讓豬飛得更快，或讓牠跟著滑鼠移動。</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+          <button class="btn" id="speedUp">加速飛行</button>
+          <button class="btn" id="slowDown">放慢飛行</button>
+          <button class="btn" id="follow">讓豬跟著滑鼠</button>
+        </div>
+
+        <div style="margin-top:14px;font-size:13px;color:rgba(0,0,0,0.7)">
+          <strong>聯絡</strong>
+          <p style="margin:8px 0 0 0">email@example.com</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="cards" aria-label="更多內容">
+      <div class="card">
+        <h3>關於我</h3>
+        <p>這是一個範例頁面，展示簡單的 SVG 動畫與互動。你可以自由修改內容與樣式。</p>
+      </div>
+      <div class="card">
+        <h3>使用說明</h3>
+        <ol>
+          <li>把這個檔案儲存為 <code>index.html</code> 並以瀏覽器開啟。</li>
+          <li>按下按鈕改變飛行速度或啟用跟隨滑鼠。</li>
+          <li>需要我加上連結、作品集或下載功能嗎？告訴我想要的內容！</li>
+        </ol>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    © 2025 薰 — 會飛的豬陪你遨遊雲端
+  </footer>
+
+  <script>
+    const pig = document.querySelector('.pig');
+    const stage = document.getElementById('stage');
+    const wingL = document.getElementById('wingL');
+    const wingR = document.getElementById('wingR');
+    let duration = 9; // seconds for full loop
+    const root = document.documentElement;
+
+    function setDuration(s){
+      duration = s;
+      pig.style.animationDuration = s + 's';
+    }
+    setDuration(duration);
+
+    document.getElementById('speedUp').addEventListener('click', ()=>{
+      setDuration(Math.max(2, duration - 2));
+    });
+    document.getElementById('slowDown').addEventListener('click', ()=>{
+      setDuration(Math.min(30, duration + 2));
+    });
+
+    let follow = false;
+    const followBtn = document.getElementById('follow');
+    followBtn.addEventListener('click', ()=>{
+      follow = !follow;
+      followBtn.textContent = follow? '取消跟隨' : '讓豬跟著滑鼠';
+      pig.style.animationPlayState = follow? 'paused' : 'running';
+    });
+
+    // make pig follow mouse when follow enabled
+    stage.parentElement.addEventListener('mousemove', (e)=>{
+      if(!follow) return;
+      const rect = stage.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      // map to transform
+      const tx = (x / rect.width) * 120 - 20; // percent translateX in %
+      const ty = (y / rect.height) * -80 + 20;
+      pig.style.transform = `translateX(${tx}%) translateY(${ty}px) rotate(${(tx-50)/6}deg)`;
+    });
+
+    // small tilt when hovering pig
+    pig.addEventListener('mouseenter', ()=>{
+      pig.style.transform += ' scale(1.05)';
+    });
+    pig.addEventListener('mouseleave', ()=>{
+      pig.style.transform = '';
+    });
+
+    // subtle cloud movement
+    document.querySelectorAll('.cloud').forEach((c,i)=>{
+      const dur = 18 + i*6;
+      c.animate([{transform:'translateX(0px)'},{transform:'translateX(-300px)'}],{duration:dur*1000,iterations:Infinity});
+    });
+
+    // reduce motion if user prefers reduced motion
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      pig.style.animationPlayState = 'paused';
+      document.querySelectorAll('.cloud').forEach(c=>c.getAnimations().forEach(a=>a.pause()));
+    }
+  </script>
+</body>
+</html>
+
