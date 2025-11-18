@@ -3,88 +3,85 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>薰の抹茶 — 會飛的小豬個人網站</title>
-  <meta name="description" content="以抹茶為主題，使用四種主視覺色：#F1F3E0 #A1BC98 #D2DCB6 #778873。包含一隻可愛會飛的小豬動畫，單檔即可使用。">
+  <title>薰の抹茶 — 會飛的抹茶豬</title>
+  <meta name="description" content="抹茶主題的個人網站範例，主視覺使用指定四色，中央有一隻可愛的會飛豬。">
   <style>
     :root{
-      --mc-cream: #F1F3E0; /* background cream */
-      --mc-green: #A1BC98;  /* primary matcha */
-      --mc-light: #D2DCB6;  /* soft accent */
-      --mc-deep: #778873;   /* deep green */
-      --card: rgba(255,255,255,0.9);
-      --shadow: rgba(0,0,0,0.06);
-      --text: #21321f;
+      --bg:#F1F3E0; /* very light matcha */
+      --leaf:#A1BC98; /* primary matcha green */
+      --mint:#D2DCB6; /* soft mint */
+      --deep:#778873; /* deeper accent */
+      --card:rgba(255,255,255,0.9);
+      --glass:rgba(255,255,255,0.12);
+      --dark:#2b2b2b;
+      --accent:#A1BC98;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,Arial,"Noto Sans TC";background:linear-gradient(180deg,var(--mc-cream) 0%, #E9F0DE 60%);color:var(--text);min-height:100vh}
+    body{margin:0;font-family:Inter,Segoe UI,Roboto,system-ui,-apple-system,'Helvetica Neue',Arial;
+      background: linear-gradient(180deg,var(--bg) 0%, #e9f0dd 70%); color:var(--dark); min-height:100vh;}
 
     header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px}
     .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:56px;height:56px;background:var(--mc-light);border-radius:12px;display:grid;place-items:center;box-shadow:0 8px 22px var(--shadow)}
-    .logo svg{width:44px;height:44px}
-    h1{font-size:18px;margin:0}
+    .logo{width:56px;height:56px;background:linear-gradient(135deg,var(--mint),var(--leaf));border-radius:14px;display:grid;place-items:center;box-shadow:0 8px 22px rgba(34,34,34,0.06)}
+    .logo svg{width:40px;height:40px}
+    h1{font-size:18px;margin:0;color:var(--deep)}
 
     main{padding:18px;max-width:1100px;margin:0 auto}
 
-    .hero{position:relative;display:flex;gap:24px;align-items:center;justify-content:center;flex-direction:column;text-align:center}
+    .hero{position:relative;display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:center}
+    @media (max-width:880px){.hero{grid-template-columns:1fr;}.controls{order:2}}
 
-    .panel{background:var(--card);padding:20px;border-radius:16px;box-shadow:0 10px 30px var(--shadow);width:100%;max-width:980px}
+    .intro{background:var(--card);padding:22px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
+    .intro h2{margin-top:0;color:var(--deep)}
+    .intro p{line-height:1.6;color:rgba(43,43,43,0.9)}
 
-    .title-sub{color:var(--mc-deep);font-weight:700}
-    .subtitle{color:var(--mc-deep);opacity:0.9;margin-top:6px}
+    .controls{padding:18px;background:linear-gradient(180deg,rgba(255,255,255,0.6), rgba(255,255,255,0.45));border-radius:12px;backdrop-filter:blur(6px)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--leaf);color:white;text-decoration:none;font-weight:600;border:none;cursor:pointer}
 
-    /* sky area */
-    .sky-wrap{position:relative;margin-top:18px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#F7FFE9 0%, #EAF5DB 100%);padding:28px}
-    .cloud{position:absolute;background:rgba(255,255,255,0.95);border-radius:50px;box-shadow:0 8px 20px var(--shadow)}
-    .cloud.c1{width:260px;height:92px;left:6%;top:8%}
-    .cloud.c2{width:160px;height:60px;left:52%;top:4%}
-    .cloud.c3{width:200px;height:72px;left:72%;top:40%}
+    /* sky & clouds */
+    .sky{position:relative;height:420px;border-radius:14px;overflow:hidden;margin-top:18px;background:radial-gradient(circle at 20% 10%, rgba(255,255,255,0.6), transparent 20%), linear-gradient(180deg, rgba(255,255,255,0.4), transparent 40%)}
+    .cloud{position:absolute;background:rgba(255,255,255,0.95);border-radius:50px;opacity:0.95;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
+    .cloud.c1{width:220px;height:72px;left:6%;top:18%}
+    .cloud.c2{width:160px;height:56px;left:50%;top:6%}
+    .cloud.c3{width:200px;height:68px;left:72%;top:48%}
 
-    /* center stage */
-    .center-stage{position:relative;height:420px;display:flex;align-items:center;justify-content:center}
+    /* central stage */
+    .stage-wrap{position:relative;display:flex;align-items:center;justify-content:center;height:100%}
+    .stage{position:relative;width:78%;max-width:620px;height:320px;background:linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0.12));border-radius:18px;display:grid;place-items:center;box-shadow:inset 0 -30px 60px rgba(0,0,0,0.02)}
 
-    /* cute pig */
-    svg.pig{width:320px;height:240px;transform-origin:center center}
-    @keyframes floaty{
-      0%{transform:translateY(6px)}
-      50%{transform:translateY(-16px)}
-      100%{transform:translateY(6px)}
-    }
-    .pig-bob{animation:floaty 4.6s ease-in-out infinite}
+    /* pig */
+    svg.pig{width:280px;height:220px;transform-origin:center center}
+    @keyframes floatUpDown{0%{transform:translateY(6px)}50%{transform:translateY(-18px)}100%{transform:translateY(6px)}}
+    @keyframes wingFlap{0%{transform:rotate(0deg)}50%{transform:rotate(20deg)}100%{transform:rotate(0deg)}}
+    .pig{animation:floatUpDown 4.5s ease-in-out infinite}
+    .wing{transform-origin:10px 10px;animation:wingFlap .32s ease-in-out infinite}
 
-    @keyframes wingFlap{0%{transform:rotate(0deg)}50%{transform:rotate(24deg)}100%{transform:rotate(0deg)}}
-    .wing{transform-origin:18px 18px;animation:wingFlap .32s ease-in-out infinite}
+    /* ground cards */
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
+    .card{background:var(--card);padding:16px;border-radius:12px}
 
-    /* green accents */
-    .accent-bar{height:8px;background:linear-gradient(90deg,var(--mc-green),var(--mc-deep));border-radius:6px;margin-top:12px}
+    footer{padding:22px;text-align:center;color:var(--deep)}
 
-    .controls{display:flex;gap:10px;justify-content:center;margin-top:12px}
-    .btn{padding:10px 14px;border-radius:10px;background:var(--mc-green);color:white;text-decoration:none;font-weight:700;border:none;cursor:pointer}
-
-    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,0.98), rgba(242,248,236,0.9));padding:14px;border-radius:12px}
-
-    footer{padding:22px;text-align:center;color:rgba(0,0,0,0.55);margin-top:18px}
-
-    @media (max-width:720px){svg.pig{width:260px;height:200px}}
+    .follow-note{font-size:13px;color:rgba(43,43,43,0.7);margin-top:12px}
   </style>
 </head>
 <body>
   <header>
     <div class="brand">
       <div class="logo" aria-hidden="true">
-        <!-- matcha leaf + pig icon -->
-        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
-          <rect width="64" height="64" rx="12" fill="var(--mc-cream)"/>
-          <g transform="translate(8 8)">
-            <path d="M40 6c0 0-6 4-10 10s-6 12-6 12 10-4 16-12 4-10 0-10z" fill="var(--mc-green)" />
-            <circle cx="20" cy="28" r="8" fill="#ffcec9" />
+        <!-- matcha cup + leaf icon -->
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="12" fill="white" opacity="0.06"/>
+          <g transform="translate(6 8)">
+            <ellipse cx="26" cy="36" rx="22" ry="6" fill="#fff" opacity="0.9"/>
+            <path d="M6 28 q20 -18 40 0" fill="none" stroke="#778873" stroke-width="3" stroke-linecap="round"/>
+            <path d="M36 6 q6 6 2 12" stroke="#A1BC98" stroke-width="3" stroke-linecap="round"/>
           </g>
         </svg>
       </div>
       <div>
         <h1>薰の抹茶</h1>
-        <div style="font-size:13px;color:var(--mc-deep)">抹茶愛好者・設計師・雲中漫步</div>
+        <div style="font-size:13px;color:var(--deep);opacity:0.8">抹茶愛好者・創意設計・雲間甜點</div>
       </div>
     </div>
     <nav>
@@ -94,147 +91,143 @@
 
   <main>
     <section class="hero">
-      <div class="panel">
-        <div class="title-sub">以抹茶為主題的個人網站</div>
-        <div class="subtitle">歡迎！這裡有一隻超級可愛、會在中央飛行的抹茶小豬。</div>
+      <div class="intro">
+        <h2 id="about">歡迎來到 薰の抹茶 ✨</h2>
+        <p>這是以抹茶為主題的個人網站範例。主視覺採用你指定的四個色碼：#F1F3E0 / #A1BC98 / #D2DCB6 / #778873。中間有一隻可愛的會飛豬，設計上更偏向可愛與溫暖的感覺，適合個人作品集或名片頁。</p>
 
-        <div class="sky-wrap">
+        <div class="sky" role="img" aria-label="抹茶風的天空，雲朵與飛豬">
           <div class="cloud c1"></div>
           <div class="cloud c2"></div>
           <div class="cloud c3"></div>
 
-          <div class="center-stage" role="img" aria-label="中央有一隻可愛的抹茶小豬在雲中飛行">
-            <!-- cute matcha pig SVG centered -->
-            <svg class="pig pig-bob" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <!-- shadow -->
-              <ellipse cx="150" cy="190" rx="60" ry="12" fill="rgba(0,0,0,0.08)"/>
+          <div class="stage-wrap">
+            <div class="stage" id="stage">
+              <!-- Cute centered pig SVG -->
+              <svg class="pig" viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- shadow -->
+                <ellipse cx="150" cy="210" rx="70" ry="16" fill="rgba(119,136,115,0.14)"/>
 
-              <!-- body -->
-              <g transform="translate(30,20)">
-                <ellipse cx="120" cy="60" rx="80" ry="52" fill="#ffd6dd" stroke="#f0a6b0" stroke-width="2"/>
-
-                <!-- cheeks -->
-                <circle cx="90" cy="72" r="8" fill="#ffb6c1" opacity="0.95"/>
-                <circle cx="150" cy="72" r="8" fill="#ffb6c1" opacity="0.95"/>
-
-                <!-- snout -->
-                <ellipse cx="138" cy="82" rx="20" ry="14" fill="#ffc9cf" stroke="#e28ea0"/>
-                <circle cx="132" cy="82" r="2" fill="#b34a56"/>
-                <circle cx="144" cy="82" r="2" fill="#b34a56"/>
-
-                <!-- eye -->
-                <circle cx="110" cy="58" r="6" fill="#222"/>
-
-                <!-- ear left -->
-                <path d="M68 28 q-10 -18 2 -22 q10 12 6 22" fill="#ffc1cc" stroke="#e78aa1"/>
-                <!-- ear right -->
-                <path d="M192 28 q10 -18 -2 -22 q-10 12 -6 22" fill="#ffc1cc" stroke="#e78aa1"/>
-
-                <!-- tiny matcha hat -->
-                <g transform="translate(102,6)">
-                  <ellipse cx="26" cy="6" rx="34" ry="12" fill="var(--mc-light)" stroke="var(--mc-deep)"/>
-                  <rect x="12" y="-12" width="28" height="12" rx="6" fill="var(--mc-green)" stroke="var(--mc-deep)"/>
-                  <text x="26" y="-2" font-size="8" text-anchor="middle" fill="white">抹茶</text>
-                </g>
-
-                <!-- wings -->
-                <g transform="translate(8,10)">
-                  <g class="wing" id="wingL">
-                    <path d="M18 54 q-36 -14 -44 -36 q12 8 20 18 q14 12 36 22" fill="#fff" stroke="#f2f2f2" stroke-width="1.5"/>
+                <!-- body group -->
+                <g transform="translate(30,28)">
+                  <!-- round body -->
+                  <ellipse cx="120" cy="86" rx="78" ry="56" fill="#ffdce0" stroke="#f0aeb8" stroke-width="2"/>
+                  <!-- cheek -->
+                  <circle cx="92" cy="98" r="8" fill="#ffd1d9" opacity="0.95"/>
+                  <circle cx="148" cy="98" r="8" fill="#ffd1d9" opacity="0.95"/>
+                  <!-- eyes -->
+                  <g fill="#2b2b2b">
+                    <ellipse cx="100" cy="76" rx="6" ry="8"/>
+                    <ellipse cx="140" cy="76" rx="6" ry="8"/>
                   </g>
-                </g>
-                <g transform="translate(180,6)">
-                  <g class="wing" id="wingR">
-                    <path d="M10 54 q36 -14 44 -36 q-12 8 -20 18 q-14 12 -36 22" fill="#fff" stroke="#f2f2f2" stroke-width="1.5"/>
+                  <!-- snout -->
+                  <ellipse cx="124" cy="94" rx="20" ry="12" fill="#ffb6c1"/>
+                  <circle cx="116" cy="94" r="2" fill="#9b3e4b"/>
+                  <circle cx="132" cy="94" r="2" fill="#9b3e4b"/>
+
+                  <!-- tiny leaf hat to fit matcha theme -->
+                  <g transform="translate(98,46)">
+                    <path d="M10 2 q12 -8 24 2 q-10 4 -18 2 q-6 -2 -6 -4" fill="#A1BC98" stroke="#778873" stroke-width="0.8"/>
                   </g>
+
+                  <!-- wings (cute, small) -->
+                  <g transform="translate(14,42)">
+                    <g class="wing" id="wingL">
+                      <path d="M8 28 q-26 -8 -30 -20 q6 4 12 8 q10 8 22 14" fill="#fff" stroke="#f2f2f2" stroke-width="1"/>
+                    </g>
+                  </g>
+                  <g transform="translate(206,38)">
+                    <g class="wing" id="wingR">
+                      <path d="M0 28 q26 -8 30 -20 q-6 4 -12 8 q-10 8 -22 14" fill="#fff" stroke="#f2f2f2" stroke-width="1"/>
+                    </g>
+                  </g>
+
+                  <!-- tail (spiral) -->
+                  <path d="M40 116 q6 6 10 6 q-4 -4 -6 -8" fill="none" stroke="#f09aa7" stroke-width="3" stroke-linecap="round"/>
                 </g>
 
-                <!-- tail -->
-                <path d="M40 110 q-10 10 -18 6 q10 -6 18 -14" fill="none" stroke="#e78aa1" stroke-width="3" stroke-linecap="round"/>
-
-                <!-- little matcha leaf decal on body -->
-                <g transform="translate(64,36)">
-                  <path d="M10 6c6-6 20-12 30-6c-8 4-22 12-30 18" fill="var(--mc-green)" opacity="0.95"/>
+                <!-- small matcha cloud accents -->
+                <g transform="translate(0,0)" opacity="0.9">
+                  <ellipse cx="36" cy="42" rx="18" ry="8" fill="#D2DCB6"/>
+                  <ellipse cx="264" cy="52" rx="16" ry="6" fill="#D2DCB6"/>
                 </g>
-              </g>
-            </svg>
+              </svg>
+            </div>
           </div>
-
         </div>
 
-        <div class="accent-bar" aria-hidden="true"></div>
-
-        <div class="controls">
-          <button class="btn" id="speedUp">加速</button>
-          <button class="btn" id="slowDown">放慢</button>
-          <button class="btn" id="follow">跟著滑鼠</button>
-        </div>
-
-        <div class="cards" style="margin-top:18px">
-          <div class="card">
-            <h3>關於 薰の抹茶</h3>
-            <p>抹茶愛好者、UI 設計與前端開發，喜歡把小物件做得可愛又實用。</p>
-          </div>
+        <div class="cards">
           <div class="card">
             <h3>作品集</h3>
-            <p>可以放上作品縮圖、說明與連結（例如 GitHub、Behance）。</p>
+            <p>放一些專案連結、截圖或 GitHub。可以改成抹茶綠色按鈕風格。</p>
+          </div>
+          <div class="card">
+            <h3>技能</h3>
+            <p>HTML, CSS, JS, 設計、插畫與抹茶甜點攝影。</p>
           </div>
         </div>
+      </div>
 
+      <aside class="controls">
+        <h3>互動控制</h3>
+        <p class="follow-note">這隻豬停在中央，會做可愛的上下漂浮與拍動小翅膀。你可以調整動作或把豬換成你的插畫。</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+          <button class="btn" id="boop">揉一揉豬豬</button>
+          <button class="btn" id="toggleWings">開/關翅膀</button>
+        </div>
+
+        <div style="margin-top:14px;font-size:13px;color:var(--deep)">
+          <strong>聯絡</strong>
+          <p style="margin:8px 0 0 0">email@example.com</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="cards" aria-label="更多內容">
+      <div class="card">
+        <h3>關於我</h3>
+        <p>這是一個抹茶主題的範例頁面，中心以可愛風格的會飛豬作為識別，色彩遵循你指定的四色主視覺。歡迎告訴我還要什麼功能或版面！</p>
+      </div>
+      <div class="card">
+        <h3>使用說明</h3>
+        <ol>
+          <li>把這個檔案儲存為 <code>index.html</code> 並以瀏覽器開啟。</li>
+          <li>按下按鈕互動，或告訴我想要調整的樣式與內容。</li>
+        </ol>
       </div>
     </section>
+
   </main>
 
   <footer>
-    © 2025 薰の抹茶 — 抹茶香與雲端小豬同行
+    © 2025 薰の抹茶 — 抹茶豬陪你悠游雲端
   </footer>
 
   <script>
-    // simple interactions: speed control & follow mouse
-    const pig = document.querySelector('.pig');
-    let bobDuration = 4.6;
-    function setBob(s){
-      bobDuration = s;
-      pig.style.animationDuration = s + 's';
-    }
-    setBob(bobDuration);
+    const pigEl = document.querySelector('.pig');
+    const wingL = document.getElementById('wingL');
+    const wingR = document.getElementById('wingR');
 
-    document.getElementById('speedUp').addEventListener('click', ()=>{
-      setBob(Math.max(1.6, bobDuration - 0.8));
-    });
-    document.getElementById('slowDown').addEventListener('click', ()=>{
-      setBob(Math.min(12, bobDuration + 0.8));
+    // boop: quick bounce
+    document.getElementById('boop').addEventListener('click', ()=>{
+      pigEl.animate([
+        {transform:'translateY(0)'},
+        {transform:'translateY(-28px)'},
+        {transform:'translateY(0)'}
+      ],{duration:520,easing:'cubic-bezier(.2,.9,.3,1)'});
     });
 
-    let follow = false;
-    const followBtn = document.getElementById('follow');
-    followBtn.addEventListener('click', ()=>{
-      follow = !follow;
-      followBtn.textContent = follow? '取消跟隨' : '跟著滑鼠';
-      pig.style.animationPlayState = follow? 'paused' : 'running';
+    // toggle wings (pause flap animation)
+    let wingsOn = true;
+    document.getElementById('toggleWings').addEventListener('click', ()=>{
+      wingsOn = !wingsOn;
+      const nodes = document.querySelectorAll('.wing');
+      nodes.forEach(n=> n.style.animationPlayState = wingsOn? 'running' : 'paused');
     });
 
-    // follow mouse when enabled
-    const stage = document.querySelector('.center-stage');
-    stage.addEventListener('mousemove', (e)=>{
-      if(!follow) return;
-      const rect = stage.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const tx = (x / rect.width) * 60 - 30; // px
-      const ty = (y / rect.height) * -40 + 20;
-      pig.style.transform = `translate(${tx}px, ${ty}px)`;
-    });
-
-    // subtle cloud drifting
-    document.querySelectorAll('.cloud').forEach((c,i)=>{
-      const dur = 22 + i*8;
-      c.animate([{transform:'translateX(0px)'},{transform:'translateX(-380px)'}],{duration:dur*1000,iterations:Infinity});
-    });
-
+    // respect prefers-reduced-motion
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      pig.style.animationPlayState = 'paused';
-      document.querySelectorAll('.cloud').forEach(c=>c.getAnimations().forEach(a=>a.pause()));
+      pigEl.style.animationPlayState = 'paused';
+      document.querySelectorAll('.wing').forEach(w=> w.style.animationPlayState='paused');
     }
   </script>
 </body>
