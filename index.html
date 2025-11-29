@@ -190,6 +190,13 @@
 
   </main>
 
+  <!-- Simple Flappy Pig Game -->
+  <section id="game" style="max-width:800px;margin:40px auto;padding:20px;background:var(--card);border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,0.06)">
+    <h2 style="text-align:center;color:var(--deep);margin-top:0">抹茶豬飛行小遊戲</h2>
+    <canvas id="gameCanvas" width="720" height="420" style="width:100%;border-radius:12px;background:#e7f3d6"></canvas>
+    <p style="text-align:center;color:var(--deep);font-size:14px">點擊畫面或按空白鍵讓豬豬飛起，避免撞到雲朵！</p>
+  </section>
+
   <footer>
     © 2025 薰の抹茶 — 抹茶豬陪你悠游雲端
   </footer>
@@ -346,5 +353,104 @@ function fitCanvas(){
 window.addEventListener('resize', fitCanvas); fitCanvas();
 
 </script>
+  <script>
+    /* ===============================
+       SIMPLE FLAPPY PIG GAME
+    =============================== */
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let pig = { x:120, y:200, r:22, vy:0 };
+    let gravity = 0.45;
+    let jump = -7.8;
+    let clouds = [];
+    let frame = 0;
+    let gameOver = false;
+    let score = 0;
+
+    function resetGame(){
+      pig.y = 200;
+      pig.vy = 0;
+      clouds = [];
+      frame = 0;
+      score = 0;
+      gameOver = false;
+    }
+
+    function spawnCloud(){
+      let gap = 150;
+      let topH = Math.random()*200 + 40;
+      clouds.push({ x:720, top:topH, bottom:topH+gap, w:70 });
+    }
+
+    function drawPig(){
+      ctx.fillStyle = '#ffb7c5';
+      ctx.beginPath();
+      ctx.arc(pig.x, pig.y, pig.r, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    function drawCloud(c){
+      ctx.fillStyle = 'white';
+      ctx.fillRect(c.x, 0, c.w, c.top);
+      ctx.fillRect(c.x, c.bottom, c.w, 420-c.bottom);
+    }
+
+    function update(){
+      if(gameOver) return;
+
+      frame++;
+      pig.vy += gravity;
+      pig.y += pig.vy;
+
+      if(frame % 120 === 0) spawnCloud();
+
+      clouds.forEach(c=> c.x -= 2.8);
+
+      if(pig.y + pig.r > 420 || pig.y - pig.r < 0){
+        gameOver = true;
+      }
+
+      clouds.forEach(c=>{
+        if(pig.x + pig.r > c.x && pig.x - pig.r < c.x + c.w){
+          if(pig.y - pig.r < c.top || pig.y + pig.r > c.bottom){
+            gameOver = true;
+          }
+        }
+        if(c.x + c.w === pig.x) score++;
+      });
+
+      clouds = clouds.filter(c=> c.x > -100);
+    }
+
+    function render(){
+      ctx.clearRect(0,0,720,420);
+
+      ctx.fillStyle = '#d9ebc4';
+      ctx.fillRect(0,0,720,420);
+
+      clouds.forEach(drawCloud);
+      drawPig();
+
+      ctx.fillStyle = '#2b2b2b';
+      ctx.font = '20px Inter';
+      ctx.fillText('Score: '+score, 20, 30);
+
+      if(gameOver){
+        ctx.font = '38px Inter';
+        ctx.fillText('Game Over', 260, 200);
+        ctx.font = '18px Inter';
+        ctx.fillText('點擊重新開始', 295, 240);
+      }
+    }
+
+    function loop(){ update(); render(); requestAnimationFrame(loop); }
+    loop();
+
+    function flap(){ if(!gameOver){ pig.vy = jump; } else { resetGame(); }}
+
+    canvas.addEventListener('mousedown', flap);
+    window.addEventListener('keydown', e=>{ if(e.code==='Space') flap(); });
+  </script>
 </body>
 </html>
