@@ -1,295 +1,350 @@
-  <!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>薰の抹茶 - 个人网站</title>
-    <style>
-        /* 使用您提供的颜色变量 */
-        :root {
-            --matcha-lightest: #F1F3E0; /* 极浅色 - 主要背景 */
-            --matcha-light: #D2DCB6;    /* 浅色 - 辅助背景/边框 */
-            --matcha-medium: #A1BC98;   /* 中色 - 按钮/标题 */
-            --matcha-dark: #778873;     /* 深色 - 文字/主要元素 */
-            --text-color: #333;
-            --white: white;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>薰の抹茶 — 會飛的抹茶豬</title>
+  <meta name="description" content="抹茶主題的個人網站範例，主視覺使用指定四色，中央有一隻可愛的會飛豬。">
+  <style>
+    :root{
+      --bg:#F1F3E0; /* very light matcha */
+      --leaf:#A1BC98; /* primary matcha green */
+      --mint:#D2DCB6; /* soft mint */
+      --deep:#778873; /* deeper accent */
+      --card:rgba(255,255,255,0.95);
+      --glass:rgba(255,255,255,0.12);
+      --dark:#2b2b2b;
+      --accent:#A1BC98;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,Roboto,system-ui,-apple-system,'Helvetica Neue',Arial;
+      background: linear-gradient(180deg,var(--bg) 0%, #e9f0dd 70%); color:var(--dark); min-height:100vh;}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--matcha-lightest); /* 整体最浅背景 */
-            color: var(--text-color);
-        }
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:56px;height:56px;background:linear-gradient(135deg,var(--mint),var(--leaf));border-radius:14px;display:grid;place-items:center;box-shadow:0 8px 22px rgba(34,34,34,0.06)}
+    .logo svg{width:40px;height:40px}
+    h1{font-size:18px;margin:0;color:var(--deep)}
 
-        /* 顶部导航栏 (模拟 GitHub 黑色条) */
-        .header {
-            background-color: #333; /* 使用黑色或深灰色模拟 */
-            color: var(--white);
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    nav.topnav{display:flex;gap:12px;align-items:center}
+    nav.topnav .navbtn{background:transparent;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;color:var(--deep)}
+    nav.topnav .navbtn.active{background:var(--leaf);color:white}
 
-        .header-nav a {
-            color: var(--white);
-            text-decoration: none;
-            margin-left: 15px;
-            font-weight: bold;
-        }
+    main{padding:18px;max-width:1100px;margin:0 auto}
 
-        /* 网站主要内容容器 */
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 20px;
-            display: flex;
-            gap: 30px;
-            position: relative; /* 用于绝对定位飞猪和背景甜点 */
-            /* 尝试用一个浅色边框和背景模拟主体结构 */
-            background-color: var(--white); 
-            border: 1px solid var(--matcha-light);
-            border-radius: 6px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
+    .hero{position:relative;display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:center}
+    @media (max-width:880px){.hero{grid-template-columns:1fr;}.controls{order:2}}
 
-        /* 左侧个人信息栏 */
-        .sidebar {
-            width: 280px;
-            flex-shrink: 0; /* 防止被挤压 */
-        }
+    .intro{background:var(--card);padding:22px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
+    .intro h2{margin-top:0;color:var(--deep)}
+    .intro p{line-height:1.6;color:rgba(43,43,43,0.9)}
 
-        /* 个人头像和信息 */
-        .profile-card {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    .controls{padding:18px;background:linear-gradient(180deg,rgba(255,255,255,0.6), rgba(255,255,255,0.45));border-radius:12px;backdrop-filter:blur(6px)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--leaf);color:white;text-decoration:none;font-weight:600;border:none;cursor:pointer}
 
-        .profile-picture {
-            width: 100%;
-            height: auto;
-            border-radius: 50%; /* 圆形头像 */
-            border: 4px solid var(--matcha-medium); /* 抹茶边框 */
-            overflow: hidden;
-            background-color: var(--matcha-light);
-            margin-bottom: 15px;
-        }
-        
-        /* 占位符，请替换为您的头像图片 */
-        .profile-picture img {
-            width: 100%;
-            display: block;
-        }
+    /* sky & clouds */
+    .sky{position:relative;height:520px;border-radius:14px;overflow:hidden;margin-top:18px;background:radial-gradient(circle at 20% 10%, rgba(255,255,255,0.6), transparent 20%), linear-gradient(180deg, rgba(255,255,255,0.4), transparent 40%)}
+    .cloud{position:absolute;background:rgba(255,255,255,0.95);border-radius:50px;opacity:0.95;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
 
-        .profile-name {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: var(--matcha-dark);
-            margin-bottom: 5px;
-        }
+    /* central stage */
+    .stage-wrap{position:relative;display:flex;align-items:center;justify-content:center;height:100%}
+    .stage{position:relative;width:88%;max-width:820px;height:420px;border-radius:18px;display:grid;place-items:center;box-shadow:inset 0 -30px 60px rgba(0,0,0,0.02);overflow:hidden}
+    /* use the provided sweets image as background inside stage */
+    .stage .bg-img{position:absolute;inset:0;background-image:url('/mnt/data/Gemini_Generated_Image_robm54robm54robm.png');background-size:cover;background-position:center;opacity:0.98;filter:grayscale(0.02) saturate(0.8)}
+    .stage .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(241,243,224,0.65), rgba(241,243,224,0.85));}
 
-        .profile-username {
-            font-size: 1.2em;
-            color: var(--matcha-dark);
-            opacity: 0.7;
-            margin-bottom: 20px;
-        }
+    /* pig (center decorative) */
+    .pig-deco{position:absolute;z-index:6;pointer-events:none}
 
-        .edit-button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--matcha-medium);
-            background-color: var(--matcha-lightest);
-            color: var(--matcha-dark);
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1.1em;
-            transition: background-color 0.3s;
-        }
+    /* pig canvas */
+    #pigGame{border-radius:12px;z-index:8}
 
-        .edit-button:hover {
-            background-color: var(--matcha-light);
-        }
+    /* tabs/cards */
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
+    .card{background:var(--card);padding:16px;border-radius:12px}
 
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            padding-top: 15px;
-            border-top: 1px solid var(--matcha-light);
-            margin-top: 20px;
-            color: var(--matcha-dark);
-        }
-        
-        /* 右侧主要内容区 */
-        .main-content {
-            flex-grow: 1;
-        }
+    footer{padding:22px;text-align:center;color:var(--deep)}
 
-        /* Tab 导航 (Overview, Repositories...) */
-        .nav-tabs {
-            display: flex;
-            border-bottom: 2px solid var(--matcha-light);
-            margin-bottom: 20px;
-        }
+    .follow-note{font-size:13px;color:rgba(43,43,43,0.7);margin-top:12px}
 
-        .nav-tabs a {
-            padding: 10px 15px;
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            border-bottom: 3px solid transparent;
-            transition: border-bottom 0.3s, color 0.3s;
-        }
-
-        .nav-tabs a.active {
-            border-bottom-color: var(--matcha-medium); /* 选中 Tab 底部线 */
-            color: var(--matcha-dark);
-            font-weight: bold;
-        }
-        
-        .tab-content {
-            padding: 20px 0;
-            min-height: 400px;
-            background-color: var(--matcha-lightest); /* Tab 内容区的浅背景 */
-            border-radius: 6px;
-            border: 1px dashed var(--matcha-light); /* 虚线框模拟占位 */
-            color: var(--matcha-dark);
-            text-align: center;
-            line-height: 400px;
-            font-size: 1.5em;
-        }
-
-        /* --- 飞猪和抹茶甜点互动区 (最重要) --- */
-        
-        /* 抹茶甜点背景 (请替换为您自己的图片或更复杂的 CSS) */
-        .matcha-dessert-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.15; /* 降低透明度作为背景 */
-            pointer-events: none; /* 确保不影响点击事件 */
-            background-image: url('matcha_dessert_pattern.png'); /* **请替换为您的抹茶甜点背景图片** */
-            background-size: cover;
-            background-repeat: repeat;
-            z-index: 1; 
-        }
-
-        /* 飞猪 (互动元素) */
-        .flying-pig {
-            position: absolute;
-            width: 100px; /* 猪的大小 */
-            height: 100px;
-            /* 初始位置，例如在内容区中心上方 */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-image: url('flying_pig_icon.png'); /* **请替换为您的可爱飞猪图片/GIF** */
-            background-size: contain;
-            background-repeat: no-repeat;
-            cursor: pointer;
-            z-index: 10; /* 确保在最上层 */
-            transition: transform 0.5s ease-out; /* 增加简单的动画过渡 */
-        }
-
-        /* 互动效果 (点击飞猪，让它稍微动一下或换位置) */
-        .flying-pig:hover {
-            transform: translate(-50%, -60%) scale(1.1); /* 悬停时稍微抬高和放大 */
-        }
-
-        /* **重要提示：实现复杂的"飞"的动画，您需要使用 CSS @keyframes 或 JavaScript** */
-
-    </style>
+    /* small responsive tweaks for tabs content */
+    .tabs-content{margin-top:14px}
+    .hidden{display:none}
+  </style>
 </head>
 <body>
-
-    <div class="header">
-        <div>Search or jump to...</div>
-        <div class="header-nav">
-            <a href="#">Pull requests</a>
-            <a href="#">Issues</a>
-            <a href="#">Marketplace</a>
-            <a href="#">Explore</a>
-        </div>
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="12" fill="white" opacity="0.06"/>
+          <g transform="translate(6 8)">
+            <ellipse cx="26" cy="36" rx="22" ry="6" fill="#fff" opacity="0.9"/>
+            <path d="M6 28 q20 -18 40 0" fill="none" stroke="#778873" stroke-width="3" stroke-linecap="round"/>
+            <path d="M36 6 q6 6 2 12" stroke="#A1BC98" stroke-width="3" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <h1>薰の抹茶</h1>
+        <div style="font-size:13px;color:var(--deep);opacity:0.9">抹茶愛好者、喜歡編織可愛的東西(▽´・(oo)・｀▽)</div>
+      </div>
     </div>
 
-    <div class="container">
-        
-        <div class="matcha-dessert-background"></div>
-        
-        <div class="flying-pig" title="点击我，薰の抹茶！"></div>
+    <nav class="topnav" role="navigation">
+      <button class="navbtn active" data-target="overview">OVERVIEW</button>
+      <button class="navbtn" data-target="repositories">REPOSITORIES</button>
+      <button class="navbtn" data-target="projects">PROJECTS</button>
+      <button class="navbtn" data-target="packages">PACKAGES</button>
+      <a class="btn" style="margin-left:12px;background:#A1BC98" href="https://www.instagram.com/ying._.cy79" target="_blank">IG</a>
+    </nav>
+  </header>
 
-        <div class="sidebar">
-            <div class="profile-card">
-                <div class="profile-picture">
-                    <img src="placeholder_avatar.png" alt="薰の抹茶 Avatar">
-                </div>
-                <div class="profile-name">薰の抹茶</div>
-                <div class="profile-username">matcha_lover_001</div>
-                
-                <button class="edit-button">编辑简介</button>
-                
-                <div class="stats">
-                    <span><span style="font-weight: bold;">55</span> 关注者</span>
-                    <span><span style="font-weight: bold;">24</span> 正在关注</span>
-                    <span><span style="font-weight: bold;">118</span> ⭐</span>
-                </div>
-            </div>
-            
-            </div>
+  <main>
+    <!-- OVERVIEW -->
+    <section id="overview" class="panel">
+      <div class="hero">
+        <div class="intro">
+          <h2>歡迎來到 薰の抹茶 ✨</h2>
+          <p>抹茶主題個人網站。主視覺採用四色：#F1F3E0 / #A1BC98 / #D2DCB6 / #778873。中間是會飛的抹茶豬，翅膀較大、可愛互動。</p>
 
-        <div class="main-content">
-            <div class="nav-tabs">
-                <a href="#" class="active">总览 (Overview)</a>
-                <a href="#">存储库 (96)</a>
-                <a href="#">项目</a>
-                <a href="#">包裹</a>
-            </div>
+          <div class="stage-wrap">
+            <div class="stage" id="stage">
+              <div class="bg-img" aria-hidden="true"></div>
+              <div class="overlay" aria-hidden="true"></div>
 
-            <div class="tab-content">
-                这里是您的主页内容，例如 README.md 或项目简介。<br>
-                **飞猪**就在网站中间飞翔，增添可爱和互动！
-            </div>
+              <!-- decorative SVG pig (non-game) -->
+              <svg class="pig-deco" width="220" height="170" viewBox="0 0 300 240" style="left:50%;top:38%;transform:translate(-50%,-50%)">
+                <g transform="translate(30,28)">
+                  <ellipse cx="120" cy="86" rx="78" ry="56" fill="#ffdce0" stroke="#f0aeb8" stroke-width="2"/>
+                  <circle cx="92" cy="98" r="8" fill="#ffd1d9"/>
+                  <circle cx="148" cy="98" r="8" fill="#ffd1d9"/>
+                  <g fill="#2b2b2b">
+                    <ellipse cx="100" cy="76" rx="6" ry="8"/>
+                    <ellipse cx="140" cy="76" rx="6" ry="8"/>
+                  </g>
+                  <ellipse cx="124" cy="94" rx="20" ry="12" fill="#ffb6c1"/>
+                </g>
+              </svg>
 
-            <h3 style="color: var(--matcha-dark); margin-top: 40px;">热门存储库</h3>
-            <div style="height: 150px; border: 1px dashed var(--matcha-light); border-radius: 6px; background-color: var(--matcha-lightest);">
-                </div>
+              <!-- canvas game (on top) -->
+              <canvas id="pigGame" width="560" height="320"></canvas>
+            </div>
+          </div>
+
+          <div class="cards">
+            <div class="card">
+              <h3>作品集</h3>
+              <p>放一些專案連結、截圖或 GitHub。可以改成抹茶綠色按鈕風格。</p>
+            </div>
+            <div class="card">
+              <h3>技能</h3>
+              <p>HTML, CSS, JS, 設計、插畫與抹茶甜點攝影。</p>
+            </div>
+          </div>
         </div>
 
-    </div>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const pig = document.querySelector('.flying-pig');
-            
-            // 每次点击，猪就飞到随机位置
-            pig.addEventListener('click', () => {
-                const container = document.querySelector('.container');
-                // 限制在主容器的范围内移动
-                const containerRect = container.getBoundingClientRect();
-                
-                const newX = Math.random() * (containerRect.width - 100) + container.offsetLeft;
-                const newY = Math.random() * (containerRect.height - 100) + container.offsetTop;
-                
-                pig.style.transition = 'top 1s ease-in-out, left 1s ease-in-out, transform 0.5s';
-                
-                // 将位置设置为相对于页面的绝对位置
-                pig.style.position = 'absolute';
-                pig.style.left = `${newX}px`;
-                pig.style.top = `${newY}px`;
-                
-                // 再次点击时恢复默认悬停效果
-                pig.style.transform = 'translate(0, 0)'; 
-                setTimeout(() => {
-                     pig.style.transition = 'transform 0.5s'; // 恢复快速悬停过渡
-                }, 1000);
-            });
-        });
-    </script>
+        <aside class="controls">
+          <h3>互動控制</h3>
+          <p class="follow-note">點擊畫面或按下「點擊豬豬」讓豬旋轉並飛起，躲避抹茶雲朵獲得分數！</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button class="btn" id="clickPig">點擊豬豬</button>
+            <button class="btn" id="resetGame">重新開始</button>
+          </div>
 
+          <div style="margin-top:14px;font-size:13px;color:var(--deep)">
+            <strong>聯絡</strong>
+            <p style="margin:8px 0 0 0">411435010@gms.ndhu.edu.tw</p>
+            <a href="https://www.instagram.com/ying._.cy79" class="btn" style="background:#A1BC98;margin-top:6px;display:inline-block">IG：@ying._.cy79</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Repositories -->
+    <section id="repositories" class="panel hidden">
+      <h2>Repositories</h2>
+      <div class="cards">
+        <div class="card"><h3>Example Repo 1</h3><p>說明或連結。</p></div>
+        <div class="card"><h3>Example Repo 2</h3><p>說明或連結。</p></div>
+        <div class="card"><h3>Example Repo 3</h3><p>說明或連結。</p></div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="panel hidden">
+      <h2>Projects</h2>
+      <div class="cards">
+        <div class="card"><h3>Project A</h3><p>展示截圖或簡介。</p></div>
+        <div class="card"><h3>Project B</h3><p>展示截圖或簡介。</p></div>
+      </div>
+    </section>
+
+    <!-- Packages -->
+    <section id="packages" class="panel hidden">
+      <h2>Packages</h2>
+      <div class="cards">
+        <div class="card"><h3>Package X</h3><p>工具或模組說明。</p></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    © 2025 薰の抹茶 — 抹茶豬陪你悠游雲端
+  </footer>
+
+<script>
+// Tab navigation
+document.querySelectorAll('.navbtn').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn').forEach(n=>n.classList.remove('active'));
+    b.classList.add('active');
+    const target = b.dataset.target;
+    document.querySelectorAll('.panel').forEach(p=> p.classList.add('hidden'));
+    document.getElementById(target).classList.remove('hidden');
+    // scroll to top of main for clarity
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+// --- Simple canvas game: Fly Pig ---
+const canvas = document.getElementById('pigGame');
+const ctx = canvas.getContext('2d');
+canvas.width = 560; canvas.height = 320;
+let gameRunning = true;
+let score = 0; let highScore = Number(localStorage.getItem('matchaPigHigh')||0);
+
+// load background image (provided sweets)
+const bg = new Image();
+bg.src = '/mnt/data/Gemini_Generated_Image_robm54robm54robm.png';
+
+// pig state
+const pig = {
+  x: 120, y: canvas.height/2, r: 26,
+  vy: 0, gravity: 0.4,
+  rotation: 0, rotSpeed: 0,
+  alive: true
+};
+
+// clouds (obstacles) - simple green rounded rectangles
+let clouds = [];
+function spawnCloud(){
+  const h = 30 + Math.random()*50;
+  const y = 40 + Math.random()*(canvas.height-120);
+  clouds.push({x: canvas.width+40, y, w: 60 + Math.random()*60, h, speed: 2 + Math.random()*2});
+}
+// spawn initial
+for(let i=0;i<3;i++){ setTimeout(spawnCloud, 800*i); }
+let cloudTimer = 0;
+
+function resetGame(){
+  score = 0; gameRunning = true; pig.y = canvas.height/2; pig.vy=0; pig.rotation=0; pig.rotSpeed=0; pig.alive=true; clouds=[]; spawnCloud();
+}
+
+// click action: make pig jump and spin
+function pigClick(){
+  if(!pig.alive) { resetGame(); return; }
+  pig.vy = -7; // jump
+  pig.rotSpeed = 0.35; // start spinning
+}
+canvas.addEventListener('click', ()=> pigClick());
+document.getElementById('clickPig').addEventListener('click', ()=> pigClick());
+document.getElementById('resetGame').addEventListener('click', ()=> resetGame());
+
+function rectsCollide(a,b){
+  return !(a.x+a.w < b.x || a.x > b.x+b.w || a.y+a.h < b.y || a.y > b.y+b.h);
+}
+
+function drawPig(x,y,r,rot){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.rotate(rot);
+  // body
+  ctx.beginPath(); ctx.ellipse(0,0,r*1.2,r,0,0,Math.PI*2); ctx.fillStyle = '#ffdce0'; ctx.fill(); ctx.strokeStyle='#f0aeb8'; ctx.lineWidth=2; ctx.stroke();
+  // snout
+  ctx.beginPath(); ctx.ellipse(18,6,12,8,0,0,Math.PI*2); ctx.fillStyle='#ffb6c1'; ctx.fill();
+  // eyes
+  ctx.fillStyle='#2b2b2b'; ctx.beginPath(); ctx.ellipse(-6,-6,4,5,0,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.ellipse(6,-6,4,5,0,0,Math.PI*2); ctx.fill();
+  // leaf hat
+  ctx.fillStyle = '#A1BC98'; ctx.beginPath(); ctx.moveTo(-12,-18); ctx.quadraticCurveTo(0,-28,18,-16); ctx.quadraticCurveTo(0,-20,-12,-18); ctx.fill(); ctx.strokeStyle='#778873'; ctx.lineWidth=0.6; ctx.stroke();
+  // wings (simple)
+  ctx.fillStyle='rgba(255,255,255,0.95)'; ctx.beginPath(); ctx.ellipse(-34,0,18,10,Math.PI/6,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.ellipse(34,0,18,10,-Math.PI/6,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+
+function update(){
+  if(!gameRunning) return;
+  // physics
+  pig.vy += pig.gravity; pig.y += pig.vy;
+  pig.rotation += pig.rotSpeed; pig.rotSpeed *= 0.98; // friction
+  if(pig.rotation > Math.PI*8) pig.rotation = pig.rotation % (Math.PI*2);
+  if(pig.y + pig.r > canvas.height){ pig.y = canvas.height - pig.r; pig.vy = 0; }
+  if(pig.y - pig.r < 0){ pig.y = pig.r; pig.vy = 0; }
+
+  // clouds move
+  cloudTimer += 1/60;
+  if(cloudTimer > 1.2){ spawnCloud(); cloudTimer = 0; }
+  for(let c of clouds){ c.x -= c.speed; }
+  // remove passed clouds, award score
+  for(let i=clouds.length-1;i>=0;i--){ if(clouds[i].x + clouds[i].w < 0){ clouds.splice(i,1); score += 1; if(score>highScore){ highScore = score; localStorage.setItem('matchaPigHigh', highScore); } } }
+
+  // collision check
+  const pigBox = {x: pig.x - pig.r, y: pig.y - pig.r, w: pig.r*2, h: pig.r*2};
+  for(let c of clouds){
+    const cloudBox = {x: c.x, y: c.y, w: c.w, h: c.h};
+    if(rectsCollide(pigBox, cloudBox)){
+      pig.alive = false; gameRunning = false; break;
+    }
+  }
+}
+
+function draw(){
+  // draw bg sweets image dimmed
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  // scale and draw bg centered
+  if(bg.complete){
+    const ratio = Math.max(canvas.width/bg.width, canvas.height/bg.height);
+    const w = bg.width * ratio; const h = bg.height * ratio;
+    ctx.globalAlpha = 0.95; ctx.drawImage(bg, (canvas.width-w)/2, (canvas.height-h)/2, w, h); ctx.globalAlpha = 1.0;
+    // overlay to keep matcha tone
+    ctx.fillStyle = 'rgba(241,243,224,0.45)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  } else {
+    ctx.fillStyle = '#F1F3E0'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  }
+
+  // draw clouds
+  for(let c of clouds){
+    ctx.fillStyle = 'rgba(162,188,152,0.92)'; roundRect(ctx, c.x, c.y, c.w, c.h, 18); ctx.fill();
+  }
+
+  // draw pig
+  drawPig(pig.x, pig.y, pig.r, pig.rotation);
+
+  // HUD
+  ctx.fillStyle = '#2b2b2b'; ctx.font = '16px system-ui'; ctx.fillText('Score: ' + score, 12, 22);
+  ctx.fillText('Best: ' + highScore, 12, 42);
+  if(!pig.alive){ ctx.fillStyle='rgba(0,0,0,0.5)'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle='white'; ctx.font='24px system-ui'; ctx.fillText('Game Over — 點擊畫面重新開始', 40, canvas.height/2); }
+}
+
+function loop(){ update(); draw(); requestAnimationFrame(loop); }
+loop();
+
+function roundRect(ctx, x, y, w, h, r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+
+// allow click to restart when dead
+canvas.addEventListener('click', ()=>{ if(!gameRunning){ resetGame(); gameRunning=true; } });
+
+// responsive: scale canvas to fit stage
+function fitCanvas(){
+  const stageEl = document.getElementById('stage');
+  const rect = stageEl.getBoundingClientRect();
+  const maxW = Math.min(rect.width*0.86, 560);
+  canvas.style.width = Math.round(maxW)+'px';
+  canvas.style.height = Math.round(maxW * (320/560))+'px';
+}
+window.addEventListener('resize', fitCanvas); fitCanvas();
+
+</script>
 </body>
 </html>
