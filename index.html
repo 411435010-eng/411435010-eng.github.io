@@ -1,224 +1,200 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>薰の抹茶 — 會飛的抹茶豬</title>
-  <meta name="description" content="抹茶主題的個人網站範例，主視覺使用指定四色，中央有一隻可愛的會飛豬。">
-  <style>
-    :root{
-      --bg:#F1F3E0; /* very light matcha */
-      --leaf:#A1BC98; /* primary matcha green */
-      --mint:#D2DCB6; /* soft mint */
-      --deep:#778873; /* deeper accent */
-      --card:rgba(255,255,255,0.95);
-      --glass:rgba(255,255,255,0.12);
-      --dark:#2b2b2b;
-      --accent:#A1BC98;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,Segoe UI,Roboto,system-ui,-apple-system,'Helvetica Neue',Arial;
-      background: linear-gradient(180deg,var(--bg) 0%, #e9f0dd 70%); color:var(--dark); min-height:100vh;}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>薰の抹茶 — 會飛的抹茶豬</title>
+  <meta name="description" content="抹茶主題的個人網站範例，主視覺使用指定四色，中央有一隻可愛的會飛豬。">
+  <style>
+    :root{
+      --bg:#F1F3E0; /* very light matcha */
+      --leaf:#A1BC98; /* primary matcha green */
+      --mint:#D2DCB6; /* soft mint */
+      --deep:#778873; /* deeper accent */
+      --card:rgba(255,255,255,0.95);
+      --glass:rgba(255,255,255,0.12);
+      --dark:#2b2b2b;
+      --accent:#A1BC98;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,Roboto,system-ui,-apple-system,'Helvetica Neue',Arial;
+      background: linear-gradient(180deg,var(--bg) 0%, #e9f0dd 70%); color:var(--dark); min-height:100vh;}
 
-    header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:56px;height:56px;background:linear-gradient(135deg,var(--mint),var(--leaf));border-radius:14px;display:grid;place-items:center;box-shadow:0 8px 22px rgba(34,34,34,0.06)}
-    .logo svg{width:40px;height:40px}
-    h1{font-size:18px;margin:0;color:var(--deep)}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:56px;height:56px;background:linear-gradient(135deg,var(--mint),var(--leaf));border-radius:14px;display:grid;place-items:center;box-shadow:0 8px 22px rgba(34,34,34,0.06)}
+    .logo svg{width:40px;height:40px}
+    h1{font-size:18px;margin:0;color:var(--deep)}
 
-    nav.topnav{display:flex;gap:12px;align-items:center}
-    nav.topnav .navbtn{background:transparent;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;color:var(--deep)}
-    nav.topnav .navbtn.active{background:var(--leaf);color:white}
+    nav.topnav{display:flex;gap:12px;align-items:center}
+    nav.topnav .navbtn{background:transparent;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;color:var(--deep)}
+    nav.topnav .navbtn.active{background:var(--leaf);color:white}
 
-    main{padding:18px;max-width:1100px;margin:0 auto}
+    main{padding:18px;max-width:1100px;margin:0 auto}
 
-    .hero{position:relative;display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:center}
-    @media (max-width:880px){.hero{grid-template-columns:1fr;}.controls{order:2}}
+    .hero{position:relative;display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:center}
+    @media (max-width:880px){.hero{grid-template-columns:1fr;}.controls{order:2}}
 
-    .intro{background:var(--card);padding:22px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
-    .intro h2{margin-top:0;color:var(--deep)}
-    .intro p{line-height:1.6;color:rgba(43,43,43,0.9)}
+    .intro{background:var(--card);padding:22px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
+    .intro h2{margin-top:0;color:var(--deep)}
+    .intro p{line-height:1.6;color:rgba(43,43,43,0.9)}
 
-    .controls{padding:18px;background:linear-gradient(180deg,rgba(255,255,255,0.6), rgba(255,255,255,0.45));border-radius:12px;backdrop-filter:blur(6px)}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--leaf);color:white;text-decoration:none;font-weight:600;border:none;cursor:pointer}
+    .controls{padding:18px;background:linear-gradient(180deg,rgba(255,255,255,0.6), rgba(255,255,255,0.45));border-radius:12px;backdrop-filter:blur(6px)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--leaf);color:white;text-decoration:none;font-weight:600;border:none;cursor:pointer}
 
-    /* sky & clouds */
-    .sky{position:relative;height:520px;border-radius:14px;overflow:hidden;margin-top:18px;background:radial-gradient(circle at 20% 10%, rgba(255,255,255,0.6), transparent 20%), linear-gradient(180deg, rgba(255,255,255,0.4), transparent 40%)}
-    .cloud{position:absolute;background:rgba(255,255,255,0.95);border-radius:50px;opacity:0.95;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
+    /* sky & clouds */
+    .sky{position:relative;height:520px;border-radius:14px;overflow:hidden;margin-top:18px;background:radial-gradient(circle at 20% 10%, rgba(255,255,255,0.6), transparent 20%), linear-gradient(180deg, rgba(255,255,255,0.4), transparent 40%)}
+    .cloud{position:absolute;background:rgba(255,255,255,0.95);border-radius:50px;opacity:0.95;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
 
-    /* central stage */
-    .stage-wrap{position:relative;display:flex;align-items:center;justify-content:center;height:100%}
-    .stage{position:relative;width:88%;max-width:820px;height:420px;border-radius:18px;display:grid;place-items:center;box-shadow:inset 0 -30px 60px rgba(0,0,0,0.02);overflow:hidden}
-    /* use the provided sweets image as background inside stage */
-    .stage .bg-img{position:absolute;inset:0;background-image:url('/mnt/data/Gemini_Generated_Image_robm54robm54robm.png');background-size:cover;background-position:center;opacity:0.98;filter:grayscale(0.02) saturate(0.8)}
-    .stage .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(241,243,224,0.65), rgba(241,243,224,0.85));}
+    /* central stage */
+    .stage-wrap{position:relative;display:flex;align-items:center;justify-content:center;height:100%;margin:20px 0}
+    .stage{position:relative;width:100%;max-width:820px;height:420px;border-radius:18px;display:grid;place-items:center;box-shadow:inset 0 -30px 60px rgba(0,0,0,0.02);overflow:hidden;background-color:var(--bg)}
+    /* use the provided sweets image as background inside stage */
+    .stage .bg-img{position:absolute;inset:0;background-image:url('matcha_bg.png'); /* <<< 请替换为您的图片路径 */ background-size:cover;background-position:center;opacity:0.98;filter:grayscale(0.02) saturate(0.8)}
+    .stage .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(241,243,224,0.65), rgba(241,243,224,0.85));}
 
-    /* pig (center decorative) */
-    .pig-deco{position:absolute;z-index:6;pointer-events:none}
+    /* pig (center decorative) */
+    .pig-deco{position:absolute;z-index:6;pointer-events:none}
 
-    /* pig canvas */
-    #pigGame{border-radius:12px;z-index:8}
+    /* pig canvas */
+    #pigGame{border-radius:12px;z-index:8;background:transparent;cursor:pointer;}
 
-    /* tabs/cards */
-    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
-    .card{background:var(--card);padding:16px;border-radius:12px}
+    /* tabs/cards */
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
+    .card{background:var(--card);padding:16px;border-radius:12px;border:1px solid var(--mint)}
 
-    footer{padding:22px;text-align:center;color:var(--deep)}
+    footer{padding:22px;text-align:center;color:var(--deep)}
 
-    .follow-note{font-size:13px;color:rgba(43,43,43,0.7);margin-top:12px}
+    .follow-note{font-size:13px;color:rgba(43,43,43,0.7);margin-top:12px}
 
-    /* small responsive tweaks for tabs content */
-    .tabs-content{margin-top:14px}
-    .hidden{display:none}
-  </style>
+    /* small responsive tweaks for tabs content */
+    .tabs-content{margin-top:14px}
+    .hidden{display:none}
+  </style>
 </head>
 <body>
-  <header>
-    <div class="brand">
-      <div class="logo" aria-hidden="true">
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="64" height="64" rx="12" fill="white" opacity="0.06"/>
-          <g transform="translate(6 8)">
-            <ellipse cx="26" cy="36" rx="22" ry="6" fill="#fff" opacity="0.9"/>
-            <path d="M6 28 q20 -18 40 0" fill="none" stroke="#778873" stroke-width="3" stroke-linecap="round"/>
-            <path d="M36 6 q6 6 2 12" stroke="#A1BC98" stroke-width="3" stroke-linecap="round"/>
-          </g>
-        </svg>
-      </div>
-      <div>
-        <h1>薰の抹茶</h1>
-        <div style="font-size:13px;color:var(--deep);opacity:0.9">抹茶愛好者、喜歡編織可愛的東西、拼貼紙膠帶(▽´・(oo)・｀▽)</div>
-      </div>
-    </div>
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="12" fill="white" opacity="0.06"/>
+          <g transform="translate(6 8)">
+            <ellipse cx="26" cy="36" rx="22" ry="6" fill="#fff" opacity="0.9"/>
+            <path d="M6 28 q20 -18 40 0" fill="none" stroke="#778873" stroke-width="3" stroke-linecap="round"/>
+            <path d="M36 6 q6 6 2 12" stroke="#A1BC98" stroke-width="3" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <h1>薰の抹茶</h1>
+        <div style="font-size:13px;color:var(--deep);opacity:0.9">抹茶愛好者、喜歡編織可愛的東西、拼貼紙膠帶(▽´・(oo)・｀▽)</div>
+      </div>
+    </div>
 
-    <nav class="topnav" role="navigation">
-      <button class="navbtn active" data-target="overview">OVERVIEW</button>
-      <button class="navbtn" data-target="repositories">REPOSITORIES</button>
-      <button class="navbtn" data-target="projects">PROJECTS</button>
-      <button class="navbtn" data-target="packages">PACKAGES</button>
-      <a class="btn" style="margin-left:12px;background:#A1BC98" href="https://www.instagram.com/ying._.cy79" target="_blank">IG</a>
-    </nav>
-  </header>
+    <nav class="topnav" role="navigation">
+      <button class="navbtn active" data-target="overview">OVERVIEW</button>
+      <button class="navbtn" data-target="repositories">REPOSITORIES</button>
+      <button class="navbtn" data-target="projects">PROJECTS</button>
+      <button class="navbtn" data-target="packages">PACKAGES</button>
+      <a class="btn" style="margin-left:12px;background:#A1BC98" href="https://www.instagram.com/ying._.cy79" target="_blank">IG</a>
+    </nav>
+  </header>
 
-  <main>
-    <!-- OVERVIEW -->
-    <section id="overview" class="panel">
-      <div class="hero">
-        <div class="intro">
-          <h2>歡迎來到 薰の抹茶 ✨</h2>
-          <p>我是一隻喜歡抹茶、會飛的小豬，希望你們喜歡我的作品~~</p>
+  <main>
+        <section id="overview" class="panel">
+      <div class="hero">
+        <div class="intro">
+          <h2>歡迎來到 薰の抹茶 ✨</h2>
+          <p>我是一隻喜歡抹茶、會飛的小豬，希望你們喜歡我的作品~~</p>
 
-          <div class="stage-wrap">
-            <div class="stage" id="stage">
-              <div class="bg-img" aria-hidden="true"></div>
-              <div class="overlay" aria-hidden="true"></div>
+          <div class="stage-wrap">
+            <div class="stage" id="stage">
+              <div class="bg-img" aria-hidden="true"></div>
+              <div class="overlay" aria-hidden="true"></div>
 
-              <!-- decorative SVG pig (non-game) -->
-              <svg class="pig-deco" width="220" height="170" viewBox="0 0 300 240" style="left:50%;top:38%;transform:translate(-50%,-50%)">
-                <g transform="translate(30,28)">
-                  <ellipse cx="120" cy="86" rx="78" ry="56" fill="#ffdce0" stroke="#f0aeb8" stroke-width="2"/>
-                  <circle cx="92" cy="98" r="8" fill="#ffd1d9"/>
-                  <circle cx="148" cy="98" r="8" fill="#ffd1d9"/>
-                  <g fill="#2b2b2b">
-                    <ellipse cx="100" cy="76" rx="6" ry="8"/>
-                    <ellipse cx="140" cy="76" rx="6" ry="8"/>
-                  </g>
-                  <ellipse cx="124" cy="94" rx="20" ry="12" fill="#ffb6c1"/>
-                </g>
-              </svg>
+                            
 
-              <!-- canvas game (on top) -->
-              <canvas id="pigGame" width="560" height="320"></canvas>
-            </div>
-          </div>
+                            <canvas id="pigGame" width="560" height="320"></canvas>
+            </div>
+          </div>
 
-          <div class="cards">
-            <div class="card">
-              <h3>作品集</h3>
-              <p>放一些專案連結、截圖或 GitHub。可以改成抹茶綠色按鈕風格。</p>
-            </div>
-            <div class="card">
-              <h3>技能</h3>
-              <p>HTML, CSS, JS, 設計、插畫與抹茶甜點攝影。</p>
-            </div>
-          </div>
-        </div>
+          <div class="cards">
+            <div class="card">
+              <h3>作品集</h3>
+              <p>放一些專案連結、截圖或 GitHub。可以改成抹茶綠色按鈕風格。</p>
+            </div>
+            <div class="card">
+              <h3>技能</h3>
+              <p>HTML, CSS, JS, 設計、插畫與抹茶甜點攝影。</p>
+            </div>
+          </div>
+        </div>
 
-        <aside class="controls">
-          <h3>互動控制</h3>
-          <p class="follow-note">點擊畫面或按下「點擊豬豬」讓豬旋轉並飛起，躲避抹茶雲朵獲得分數！</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-            <button class="btn" id="clickPig">點擊豬豬</button>
-            <button class="btn" id="resetGame">重新開始</button>
-          </div>
+        <aside class="controls">
+          <h3>互動控制</h3>
+          <p class="follow-note">點擊畫面或按下「點擊豬豬」讓豬旋轉並飛起，躲避抹茶雲朵獲得分數！</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button class="btn" id="clickPig">點擊豬豬</button>
+            <button class="btn" id="resetGameButton">重新開始</button>
+          </div>
 
-          <div style="margin-top:14px;font-size:13px;color:var(--deep)">
-            <strong>聯絡</strong>
-            <p style="margin:8px 0 0 0">411435010@gms.ndhu.edu.tw</p>
-            <a href="https://www.instagram.com/ying._.cy79" class="btn" style="background:#A1BC98;margin-top:6px;display:inline-block">IG：@ying._.cy79</a>
-          </div>
-        </aside>
-      </div>
-    </section>
+          <div style="margin-top:14px;font-size:13px;color:var(--deep)">
+            <strong>聯絡</strong>
+            <p style="margin:8px 0 0 0">411435010@gms.ndhu.edu.tw</p>
+            <a href="https://www.instagram.com/ying._.cy79" class="btn" style="background:#A1BC98;margin-top:6px;display:inline-block">IG：@ying._.cy79</a>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-    <!-- Repositories -->
-    <section id="repositories" class="panel hidden">
-      <h2>Repositories</h2>
-      <div class="cards">
-        <div class="card"><h3>Example Repo 1</h3><p>說明或連結。</p></div>
-        <div class="card"><h3>Example Repo 2</h3><p>說明或連結。</p></div>
-        <div class="card"><h3>Example Repo 3</h3><p>說明或連結。</p></div>
-      </div>
-    </section>
+        <section id="repositories" class="panel hidden">
+      <h2>Repositories</h2>
+      <div class="cards">
+        <div class="card"><h3>Example Repo 1</h3><p>說明或連結。</p></div>
+        <div class="card"><h3>Example Repo 2</h3><p>說明或連結。</p></div>
+        <div class="card"><h3>Example Repo 3</h3><p>說明或連結。</p></div>
+      </div>
+    </section>
 
-    <!-- Projects -->
-    <section id="projects" class="panel hidden">
-      <h2>Projects</h2>
-      <div class="cards">
-        <div class="card"><h3>Project A</h3><p>展示截圖或簡介。</p></div>
-        <div class="card"><h3>Project B</h3><p>展示截圖或簡介。</p></div>
-      </div>
-    </section>
+        <section id="projects" class="panel hidden">
+      <h2>Projects</h2>
+      <div class="cards">
+        <div class="card"><h3>Project A</h3><p>展示截圖或簡介。</p></div>
+        <div class="card"><h3>Project B</h3><p>展示截圖或簡介。</p></div>
+      </div>
+    </section>
 
-    <!-- Packages -->
-    <section id="packages" class="panel hidden">
-      <h2>Packages</h2>
-      <div class="cards">
-        <div class="card"><h3>Package X</h3><p>工具或模組說明。</p></div>
-      </div>
-    </section>
+        <section id="packages" class="panel hidden">
+      <h2>Packages</h2>
+      <div class="cards">
+        <div class="card"><h3>Package X</h3><p>工具或模組說明。</p></div>
+      </div>
+    </section>
 
-  </main>
-
-  <!-- Simple Flappy Pig Game -->
-  <section id="game" style="max-width:800px;margin:40px auto;padding:20px;background:var(--card);border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,0.06)">
-    <h2 style="text-align:center;color:var(--deep);margin-top:0">抹茶豬飛行小遊戲</h2>
-    <canvas id="gameCanvas" width="720" height="420" style="width:100%;border-radius:12px;background:#e7f3d6"></canvas>
-    <p style="text-align:center;color:var(--deep);font-size:14px">點擊畫面或按空白鍵讓豬豬飛起，避免撞到雲朵！</p>
-  </section>
-
-  <footer>
-    © 2025 薰の抹茶 — 抹茶豬陪你悠游雲端
-  </footer>
+  </main>
+    <footer>
+    © 2025 薰の抹茶 — 抹茶豬陪你悠游雲端
+  </footer>
 <script>
 // Tab navigation
 document.querySelectorAll('.navbtn').forEach(b=>{
-  b.addEventListener('click', ()=>{
-    document.querySelectorAll('.navbtn').forEach(n=>n.classList.remove('active'));
-    b.classList.add('active');
-    const target = b.dataset.target;
-    document.querySelectorAll('.panel').forEach(p=> p.classList.add('hidden'));
-    document.getElementById(target).classList.remove('hidden');
-    window.scrollTo({top:0,behavior:'smooth'});
-  });
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.navbtn').forEach(n=>n.classList.remove('active'));
+    b.classList.add('active');
+    const target = b.dataset.target;
+    document.querySelectorAll('.panel').forEach(p=> p.classList.add('hidden'));
+    document.getElementById(target).classList.remove('hidden');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
 });
 
 // ======================
-//   Fly Pig Game Fix
+//   Fly Pig Game Script
 // ======================
 const canvas = document.getElementById('pigGame');
 const ctx = canvas.getContext('2d');
-canvas.width = 560; 
+// 設置 Canvas 內部尺寸
+canvas.width = 560; 
 canvas.height = 320;
 
 let gameRunning = true;
@@ -227,246 +203,249 @@ let highScore = Number(localStorage.getItem('matchaPigHigh')||0);
 
 // Load bg
 const bg = new Image();
-bg.src = '/mnt/data/Gemini_Generated_Image_robm54robm54robm.png';
+// !!! 請務必將此路徑替換為您本地的圖片檔名 !!!
+bg.src = 'matcha_bg.png'; 
 
 // Pig state
 const pig = {
-  x: 120, y: canvas.height/2, r: 26,
-  vy: 0, gravity: 0.4,
-  rotation: 0, rotSpeed: 0,
-  alive: true
+  x: 120, y: canvas.height/2, r: 26,
+  vy: 0, gravity: 0.4,
+  rotation: 0, rotSpeed: 0,
+  alive: true
 };
 
 let clouds = [];
 let lastSpawn = performance.now();
 
 function spawnCloud(){
-  const h = 30 + Math.random()*50;
-  const y = 40 + Math.random()*(canvas.height-120);
-  clouds.push({
-    x: canvas.width+40,
-    y,
-    w: 60 + Math.random()*60,
-    h,
-    speed: 2 + Math.random()*2
-  });
+  const h = 30 + Math.random()*50;
+  const y = 40 + Math.random()*(canvas.height-120);
+  clouds.push({
+    x: canvas.width+40,
+    y,
+    w: 60 + Math.random()*60,
+    h,
+    speed: 2 + Math.random()*2
+  });
 }
 
 // First clouds
-spawnCloud();
+setTimeout(spawnCloud, 500); // 延遲生成第一片雲
 
 function resetGame(){
-  score = 0;
-  gameRunning = true;
-  pig.y = canvas.height/2;
-  pig.vy = 0;
-  pig.rotation = 0;
-  pig.rotSpeed = 0;
-  pig.alive = true;
-  clouds = [];
-  spawnCloud();
+  score = 0;
+  gameRunning = true;
+  pig.y = canvas.height/2;
+  pig.vy = 0;
+  pig.rotation = 0;
+  pig.rotSpeed = 0;
+  pig.alive = true;
+  clouds = [];
+  lastSpawn = performance.now();
+  setTimeout(spawnCloud, 1000); 
 }
 
 // NEW: pig reacts properly
 function pigClick(){
-  if(!pig.alive){
-    resetGame();
-    return;
-  }
-  pig.vy = -7;
-  pig.rotSpeed = 0.35; // rotating effect
+  if(!pig.alive){
+    resetGame();
+    return;
+  }
+  pig.vy = -7;
+  pig.rotSpeed = 0.35; // rotating effect
 }
 
-canvas.addEventListener('click', pigClick);
-canvas.addEventListener('mousedown', pigClick);  // 保證手機能用
-
-// Remove broken listener
-// document.getElementById('clickPig') ← 原本不存在
-// → 不做監聽
+// Event listeners for interaction
+document.getElementById('clickPig').addEventListener('click', pigClick);
+document.getElementById('resetGameButton').addEventListener('click', resetGame);
+canvas.addEventListener('click', pigClick); // Canvas 點擊
+window.addEventListener('keydown', (e) => { // 空白鍵飛行
+  if (e.code === 'Space') {
+    e.preventDefault();
+    pigClick();
+  }
+});
 
 // Collision
 function rectsCollide(a,b){
-  return !(a.x+a.w < b.x || a.x > b.x+b.w || a.y+a.h < b.y || a.y > b.y+b.h);
+  return !(a.x+a.w < b.x || a.x > b.x+b.w || a.y+a.h < b.y || a.y > b.y+b.h);
 }
 
 // Pig draw
 function drawPig(x,y,r,rot){
-  ctx.save();
-  ctx.translate(x,y);
-  ctx.rotate(rot);
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.rotate(rot);
 
-  // body
-  ctx.beginPath();
-  ctx.ellipse(0,0,r*1.2,r,0,0,Math.PI*2);
-  ctx.fillStyle = '#ffdce0';
-  ctx.fill();
-  ctx.strokeStyle='#f0aeb8';
-  ctx.lineWidth=2;
-  ctx.stroke();
+  // body
+  ctx.beginPath();
+  ctx.ellipse(0,0,r*1.2,r,0,0,Math.PI*2);
+  ctx.fillStyle = '#ffdce0';
+  ctx.fill();
+  ctx.strokeStyle='#f0aeb8';
+  ctx.lineWidth=2;
+  ctx.stroke();
 
-  // snout
-  ctx.beginPath();
-  ctx.ellipse(18,6,12,8,0,0,Math.PI*2);
-  ctx.fillStyle='#ffb6c1';
-  ctx.fill();
+  // snout
+  ctx.beginPath();
+  ctx.ellipse(18,6,12,8,0,0,Math.PI*2);
+  ctx.fillStyle='#ffb6c1';
+  ctx.fill();
 
-  // eyes
-  ctx.fillStyle='#2b2b2b';
-  ctx.beginPath(); ctx.ellipse(-6,-6,4,5,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(6,-6,4,5,0,Math.PI*2); ctx.fill();
+  // eyes
+  ctx.fillStyle='#2b2b2b';
+  ctx.beginPath(); ctx.ellipse(-6,-6,4,5,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(6,-6,4,5,0,Math.PI*2); ctx.fill();
 
-  // leaf hat
-  ctx.fillStyle='#A1BC98';
-  ctx.beginPath();
-  ctx.moveTo(-12,-18);
-  ctx.quadraticCurveTo(0,-28,18,-16);
-  ctx.quadraticCurveTo(0,-20,-12,-18);
-  ctx.fill();
-  ctx.strokeStyle='#778873';
-  ctx.lineWidth=0.6;
-  ctx.stroke();
+  // leaf hat (抹茶葉)
+  ctx.fillStyle='#A1BC98';
+  ctx.beginPath();
+  ctx.moveTo(-12,-18);
+  ctx.quadraticCurveTo(0,-28,18,-16);
+  ctx.quadraticCurveTo(0,-20,-12,-18);
+  ctx.fill();
+  ctx.strokeStyle='#778873';
+  ctx.lineWidth=0.6;
+  ctx.stroke();
 
-  // wings
-  ctx.fillStyle='rgba(255,255,255,0.95)';
-  ctx.beginPath(); ctx.ellipse(-34,0,18,10,Math.PI/6,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(34,0,18,10,-Math.PI/6,0,Math.PI*2); ctx.fill();
+  // wings (小翅膀)
+  ctx.fillStyle='rgba(255,255,255,0.95)';
+  ctx.beginPath(); ctx.ellipse(-34,0,18,10,Math.PI/6,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(34,0,18,10,-Math.PI/6,0,Math.PI*2); ctx.fill();
 
-  ctx.restore();
+  ctx.restore();
 }
 
 // Game update using real time
 let lastTime = performance.now();
 
 function update(){
-  if(!gameRunning) return;
+  if(!gameRunning) return;
 
-  const now = performance.now();
-  const dt = (now - lastTime) / 1000; // seconds
-  lastTime = now;
+  const now = performance.now();
+  const dt = (now - lastTime) / 1000; // seconds
+  lastTime = now;
 
-  // Pig physics
-  pig.vy += pig.gravity;
-  pig.y += pig.vy;
-  pig.rotation += pig.rotSpeed;
-  pig.rotSpeed *= 0.98;
+  // Pig physics
+  pig.vy += pig.gravity;
+  pig.y += pig.vy;
+  pig.rotation += pig.rotSpeed * dt * 60; // 乘以 dt*60 以保持幀率獨立
+  pig.rotSpeed *= 0.98;
 
-  if(pig.y + pig.r > canvas.height){ pig.y = canvas.height - pig.r; pig.vy = 0; }
-  if(pig.y - pig.r < 0){ pig.y = pig.r; pig.vy = 0; }
+  // boundary check
+  if(pig.y + pig.r > canvas.height){ pig.y = canvas.height - pig.r; pig.vy = 0; pig.alive = false; gameRunning = false;}
+  if(pig.y - pig.r < 0){ pig.y = pig.r; pig.vy = 0; }
 
-  // Clouds spawn using real time
-  if(now - lastSpawn > 1200){
-    spawnCloud();
-    lastSpawn = now;
-  }
+  // Clouds spawn using real time
+  if(now - lastSpawn > 1400){
+    spawnCloud();
+    lastSpawn = now;
+  }
 
-  for(let c of clouds){ c.x -= c.speed; }
+  for(let c of clouds){ c.x -= c.speed; }
 
-  // Cloud passed
-  for(let i=clouds.length-1;i>=0;i--){
-    if(clouds[i].x + clouds[i].w < 0){
-      clouds.splice(i,1);
-      score++;
-      if(score > highScore){
-        highScore = score;
-        localStorage.setItem('matchaPigHigh', highScore);
-      }
-    }
-  }
+  // Cloud passed
+  for(let i=clouds.length-1;i>=0;i--){
+    if(clouds[i].x + clouds[i].w < 0){
+      clouds.splice(i,1);
+      score++;
+      if(score > highScore){
+        highScore = score;
+        localStorage.setItem('matchaPigHigh', highScore);
+      }
+    }
+  }
 
-  // Collisions
-  const pigBox = {x:pig.x-pig.r, y:pig.y-pig.r, w:pig.r*2, h:pig.r*2};
-  for(let c of clouds){
-    const cb = {x:c.x, y:c.y, w:c.w, h:c.h};
-    if(rectsCollide(pigBox, cb)){
-      pig.alive = false;
-      gameRunning = false;
-      break;
-    }
-  }
+  // Collisions
+  // 使用更準確的碰撞盒，但由於豬是圓形，暫時使用包裹豬的矩形
+  const pigBox = {x:pig.x-pig.r, y:pig.y-pig.r, w:pig.r*2, h:pig.r*2};
+  for(let c of clouds){
+    const cb = {x:c.x, y:c.y, w:c.w, h:c.h};
+    if(rectsCollide(pigBox, cb)){
+      pig.alive = false;
+      gameRunning = false;
+      break;
+    }
+  }
 }
 
 function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // bg
-  if(bg.complete){
-    const ratio = Math.max(canvas.width/bg.width, canvas.height/bg.height);
-    const w = bg.width * ratio;
-    const h = bg.height * ratio;
-    ctx.globalAlpha = 0.95;
-    ctx.drawImage(bg, (canvas.width-w)/2, (canvas.height-h)/2, w, h);
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = 'rgba(241,243,224,0.45)';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-  }else{
-    ctx.fillStyle = '#F1F3E0';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-  }
+  // background: 圖片 + 疊加層
+  if(bg.complete){
+    const ratio = Math.max(canvas.width/bg.width, canvas.height/bg.height);
+    const w = bg.width * ratio;
+    const h = bg.height * ratio;
+    ctx.globalAlpha = 0.95;
+    ctx.drawImage(bg, (canvas.width-w)/2, (canvas.height-h)/2, w, h);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = 'rgba(241,243,224,0.45)'; // 半透明背景色
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+  }else{
+    ctx.fillStyle = '#F1F3E0';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+  }
 
-  // clouds
-  for(let c of clouds){
-    ctx.fillStyle='rgba(162,188,152,0.92)';
-    roundRect(ctx, c.x, c.y, c.w, c.h, 18);
-    ctx.fill();
-  }
+  // clouds (抹茶雲)
+  for(let c of clouds){
+    ctx.fillStyle='rgba(161,188,152,0.92)'; // --leaf
+    roundRect(ctx, c.x, c.y, c.w, c.h, 18);
+    ctx.fill();
+  }
 
-  drawPig(pig.x, pig.y, pig.r, pig.rotation);
+  // pig
+  drawPig(pig.x, pig.y, pig.r, pig.rotation);
 
-  ctx.fillStyle='#2b2b2b';
-  ctx.font='16px system-ui';
-  ctx.fillText('Score: '+score, 12, 22);
-  ctx.fillText('Best: '+highScore, 12, 42);
+  // Score
+  ctx.fillStyle='#778873'; // --deep
+  ctx.font='16px Inter, system-ui';
+  ctx.fillText('Score: '+score, 12, 22);
+  ctx.fillText('Best: '+highScore, 12, 42);
 
-  if(!pig.alive){
-    ctx.fillStyle='rgba(0,0,0,0.5)';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle='white';
-    ctx.font='24px system-ui';
-    ctx.fillText('Game Over — 點一下重新開始', 60, canvas.height/2);
-  }
+  // Game Over overlay
+  if(!pig.alive){
+    ctx.fillStyle='rgba(0,0,0,0.5)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='white';
+    ctx.font='24px Inter, system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText('Game Over — 點一下重新開始', canvas.width/2, canvas.height/2);
+    ctx.textAlign = 'left';
+  }
 }
 
 function loop(){
-  update();
-  draw();
-  requestAnimationFrame(loop);
+  update();
+  draw();
+  requestAnimationFrame(loop);
 }
 loop();
 
-// round rect util
+// round rect util (for drawing rounded clouds)
 function roundRect(ctx,x,y,w,h,r){
-  ctx.beginPath();
-  ctx.moveTo(x+r,y);
-  ctx.arcTo(x+w,y,x+w,y+h,r);
-  ctx.arcTo(x+w,y+h,x,y+h,r);
-  ctx.arcTo(x,y+h,x,y,r);
-  ctx.arcTo(x,y,x+w,y,r);
-  ctx.closePath();
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
 }
 
-// Restart on click
-canvas.addEventListener('click', ()=>{
-  if(!gameRunning){
-    resetGame();
-    gameRunning = true;
-  }
-});
-
-// responsive
+// responsive (讓 Canvas 自動適應容器大小)
 function fitCanvas(){
-  const stageEl = document.getElementById('stage');
-  const rect = stageEl.getBoundingClientRect();
-  const maxW = Math.min(rect.width*0.86, 560);
-  canvas.style.width = maxW+'px';
-  canvas.style.height = (maxW*(320/560))+'px';
+  const stageEl = document.getElementById('stage');
+  const rect = stageEl.getBoundingClientRect();
+  // 限制最大寬度為 560px (Canvas 內部設定寬度)
+  const maxW = Math.min(rect.width*0.9, 560);
+  canvas.style.width = maxW+'px';
+  // 高寬比 560:320
+  canvas.style.height = (maxW*(320/560))+'px';
 }
 window.addEventListener('resize', fitCanvas);
 fitCanvas();
 
 </script>
-
-
-
-  
 </body>
 </html>
