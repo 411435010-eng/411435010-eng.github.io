@@ -210,23 +210,27 @@ document.querySelectorAll('.navbtn').forEach(b=>{
     const target = b.dataset.target;
     document.querySelectorAll('.panel').forEach(p=> p.classList.add('hidden'));
     document.getElementById(target).classList.remove('hidden');
-    // scroll to top of main for clarity
     window.scrollTo({top:0,behavior:'smooth'});
   });
 });
 
-// --- Simple canvas game: Fly Pig ---
+// ======================
+//   Fly Pig Game Fix
+// ======================
 const canvas = document.getElementById('pigGame');
 const ctx = canvas.getContext('2d');
-canvas.width = 560; canvas.height = 320;
-let gameRunning = true;
-let score = 0; let highScore = Number(localStorage.getItem('matchaPigHigh')||0);
+canvas.width = 560; 
+canvas.height = 320;
 
-// load background image (provided sweets)
+let gameRunning = true;
+let score = 0;
+let highScore = Number(localStorage.getItem('matchaPigHigh')||0);
+
+// Load bg
 const bg = new Image();
 bg.src = '/mnt/data/Gemini_Generated_Image_robm54robm54robm.png';
 
-// pig state
+// Pig state
 const pig = {
   x: 120, y: canvas.height/2, r: 26,
   vy: 0, gravity: 0.4,
@@ -234,223 +238,234 @@ const pig = {
   alive: true
 };
 
-// clouds (obstacles) - simple green rounded rectangles
 let clouds = [];
+let lastSpawn = performance.now();
+
 function spawnCloud(){
   const h = 30 + Math.random()*50;
   const y = 40 + Math.random()*(canvas.height-120);
-  clouds.push({x: canvas.width+40, y, w: 60 + Math.random()*60, h, speed: 2 + Math.random()*2});
+  clouds.push({
+    x: canvas.width+40,
+    y,
+    w: 60 + Math.random()*60,
+    h,
+    speed: 2 + Math.random()*2
+  });
 }
-// spawn initial
-for(let i=0;i<3;i++){ setTimeout(spawnCloud, 800*i); }
-let cloudTimer = 0;
+
+// First clouds
+spawnCloud();
 
 function resetGame(){
-  score = 0; gameRunning = true; pig.y = canvas.height/2; pig.vy=0; pig.rotation=0; pig.rotSpeed=0; pig.alive=true; clouds=[]; spawnCloud();
+  score = 0;
+  gameRunning = true;
+  pig.y = canvas.height/2;
+  pig.vy = 0;
+  pig.rotation = 0;
+  pig.rotSpeed = 0;
+  pig.alive = true;
+  clouds = [];
+  spawnCloud();
 }
 
-// click action: make pig jump and spin
+// NEW: pig reacts properly
 function pigClick(){
-  if(!pig.alive) { resetGame(); return; }
-  pig.vy = -7; // jump
-  pig.rotSpeed = 0.35; // start spinning
+  if(!pig.alive){
+    resetGame();
+    return;
+  }
+  pig.vy = -7;
+  pig.rotSpeed = 0.35; // rotating effect
 }
-canvas.addEventListener('click', ()=> pigClick());
-document.getElementById('clickPig').addEventListener('click', ()=> pigClick());
-document.getElementById('resetGame').addEventListener('click', ()=> resetGame());
 
+canvas.addEventListener('click', pigClick);
+canvas.addEventListener('mousedown', pigClick);  // 保證手機能用
+
+// Remove broken listener
+// document.getElementById('clickPig') ← 原本不存在
+// → 不做監聽
+
+// Collision
 function rectsCollide(a,b){
   return !(a.x+a.w < b.x || a.x > b.x+b.w || a.y+a.h < b.y || a.y > b.y+b.h);
 }
 
+// Pig draw
 function drawPig(x,y,r,rot){
   ctx.save();
   ctx.translate(x,y);
   ctx.rotate(rot);
+
   // body
-  ctx.beginPath(); ctx.ellipse(0,0,r*1.2,r,0,0,Math.PI*2); ctx.fillStyle = '#ffdce0'; ctx.fill(); ctx.strokeStyle='#f0aeb8'; ctx.lineWidth=2; ctx.stroke();
+  ctx.beginPath();
+  ctx.ellipse(0,0,r*1.2,r,0,0,Math.PI*2);
+  ctx.fillStyle = '#ffdce0';
+  ctx.fill();
+  ctx.strokeStyle='#f0aeb8';
+  ctx.lineWidth=2;
+  ctx.stroke();
+
   // snout
-  ctx.beginPath(); ctx.ellipse(18,6,12,8,0,0,Math.PI*2); ctx.fillStyle='#ffb6c1'; ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(18,6,12,8,0,0,Math.PI*2);
+  ctx.fillStyle='#ffb6c1';
+  ctx.fill();
+
   // eyes
-  ctx.fillStyle='#2b2b2b'; ctx.beginPath(); ctx.ellipse(-6,-6,4,5,0,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.ellipse(6,-6,4,5,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#2b2b2b';
+  ctx.beginPath(); ctx.ellipse(-6,-6,4,5,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(6,-6,4,5,0,Math.PI*2); ctx.fill();
+
   // leaf hat
-  ctx.fillStyle = '#A1BC98'; ctx.beginPath(); ctx.moveTo(-12,-18); ctx.quadraticCurveTo(0,-28,18,-16); ctx.quadraticCurveTo(0,-20,-12,-18); ctx.fill(); ctx.strokeStyle='#778873'; ctx.lineWidth=0.6; ctx.stroke();
-  // wings (simple)
-  ctx.fillStyle='rgba(255,255,255,0.95)'; ctx.beginPath(); ctx.ellipse(-34,0,18,10,Math.PI/6,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.ellipse(34,0,18,10,-Math.PI/6,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#A1BC98';
+  ctx.beginPath();
+  ctx.moveTo(-12,-18);
+  ctx.quadraticCurveTo(0,-28,18,-16);
+  ctx.quadraticCurveTo(0,-20,-12,-18);
+  ctx.fill();
+  ctx.strokeStyle='#778873';
+  ctx.lineWidth=0.6;
+  ctx.stroke();
+
+  // wings
+  ctx.fillStyle='rgba(255,255,255,0.95)';
+  ctx.beginPath(); ctx.ellipse(-34,0,18,10,Math.PI/6,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(34,0,18,10,-Math.PI/6,0,Math.PI*2); ctx.fill();
+
   ctx.restore();
 }
 
+// Game update using real time
+let lastTime = performance.now();
+
 function update(){
   if(!gameRunning) return;
-  // physics
-  pig.vy += pig.gravity; pig.y += pig.vy;
-  pig.rotation += pig.rotSpeed; pig.rotSpeed *= 0.98; // friction
-  if(pig.rotation > Math.PI*8) pig.rotation = pig.rotation % (Math.PI*2);
+
+  const now = performance.now();
+  const dt = (now - lastTime) / 1000; // seconds
+  lastTime = now;
+
+  // Pig physics
+  pig.vy += pig.gravity;
+  pig.y += pig.vy;
+  pig.rotation += pig.rotSpeed;
+  pig.rotSpeed *= 0.98;
+
   if(pig.y + pig.r > canvas.height){ pig.y = canvas.height - pig.r; pig.vy = 0; }
   if(pig.y - pig.r < 0){ pig.y = pig.r; pig.vy = 0; }
 
-  // clouds move
-  cloudTimer += 1/60;
-  if(cloudTimer > 1.2){ spawnCloud(); cloudTimer = 0; }
-  for(let c of clouds){ c.x -= c.speed; }
-  // remove passed clouds, award score
-  for(let i=clouds.length-1;i>=0;i--){ if(clouds[i].x + clouds[i].w < 0){ clouds.splice(i,1); score += 1; if(score>highScore){ highScore = score; localStorage.setItem('matchaPigHigh', highScore); } } }
+  // Clouds spawn using real time
+  if(now - lastSpawn > 1200){
+    spawnCloud();
+    lastSpawn = now;
+  }
 
-  // collision check
-  const pigBox = {x: pig.x - pig.r, y: pig.y - pig.r, w: pig.r*2, h: pig.r*2};
+  for(let c of clouds){ c.x -= c.speed; }
+
+  // Cloud passed
+  for(let i=clouds.length-1;i>=0;i--){
+    if(clouds[i].x + clouds[i].w < 0){
+      clouds.splice(i,1);
+      score++;
+      if(score > highScore){
+        highScore = score;
+        localStorage.setItem('matchaPigHigh', highScore);
+      }
+    }
+  }
+
+  // Collisions
+  const pigBox = {x:pig.x-pig.r, y:pig.y-pig.r, w:pig.r*2, h:pig.r*2};
   for(let c of clouds){
-    const cloudBox = {x: c.x, y: c.y, w: c.w, h: c.h};
-    if(rectsCollide(pigBox, cloudBox)){
-      pig.alive = false; gameRunning = false; break;
+    const cb = {x:c.x, y:c.y, w:c.w, h:c.h};
+    if(rectsCollide(pigBox, cb)){
+      pig.alive = false;
+      gameRunning = false;
+      break;
     }
   }
 }
 
 function draw(){
-  // draw bg sweets image dimmed
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  // scale and draw bg centered
+
+  // bg
   if(bg.complete){
     const ratio = Math.max(canvas.width/bg.width, canvas.height/bg.height);
-    const w = bg.width * ratio; const h = bg.height * ratio;
-    ctx.globalAlpha = 0.95; ctx.drawImage(bg, (canvas.width-w)/2, (canvas.height-h)/2, w, h); ctx.globalAlpha = 1.0;
-    // overlay to keep matcha tone
-    ctx.fillStyle = 'rgba(241,243,224,0.45)'; ctx.fillRect(0,0,canvas.width,canvas.height);
-  } else {
-    ctx.fillStyle = '#F1F3E0'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    const w = bg.width * ratio;
+    const h = bg.height * ratio;
+    ctx.globalAlpha = 0.95;
+    ctx.drawImage(bg, (canvas.width-w)/2, (canvas.height-h)/2, w, h);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = 'rgba(241,243,224,0.45)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+  }else{
+    ctx.fillStyle = '#F1F3E0';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
   }
 
-  // draw clouds
+  // clouds
   for(let c of clouds){
-    ctx.fillStyle = 'rgba(162,188,152,0.92)'; roundRect(ctx, c.x, c.y, c.w, c.h, 18); ctx.fill();
+    ctx.fillStyle='rgba(162,188,152,0.92)';
+    roundRect(ctx, c.x, c.y, c.w, c.h, 18);
+    ctx.fill();
   }
 
-  // draw pig
   drawPig(pig.x, pig.y, pig.r, pig.rotation);
 
-  // HUD
-  ctx.fillStyle = '#2b2b2b'; ctx.font = '16px system-ui'; ctx.fillText('Score: ' + score, 12, 22);
-  ctx.fillText('Best: ' + highScore, 12, 42);
-  if(!pig.alive){ ctx.fillStyle='rgba(0,0,0,0.5)'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle='white'; ctx.font='24px system-ui'; ctx.fillText('Game Over — 點擊畫面重新開始', 40, canvas.height/2); }
+  ctx.fillStyle='#2b2b2b';
+  ctx.font='16px system-ui';
+  ctx.fillText('Score: '+score, 12, 22);
+  ctx.fillText('Best: '+highScore, 12, 42);
+
+  if(!pig.alive){
+    ctx.fillStyle='rgba(0,0,0,0.5)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='white';
+    ctx.font='24px system-ui';
+    ctx.fillText('Game Over — 點一下重新開始', 60, canvas.height/2);
+  }
 }
 
-function loop(){ update(); draw(); requestAnimationFrame(loop); }
+function loop(){
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
 loop();
 
-function roundRect(ctx, x, y, w, h, r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+// round rect util
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
 
-// allow click to restart when dead
-canvas.addEventListener('click', ()=>{ if(!gameRunning){ resetGame(); gameRunning=true; } });
+// Restart on click
+canvas.addEventListener('click', ()=>{
+  if(!gameRunning){
+    resetGame();
+    gameRunning = true;
+  }
+});
 
-// responsive: scale canvas to fit stage
+// responsive
 function fitCanvas(){
   const stageEl = document.getElementById('stage');
   const rect = stageEl.getBoundingClientRect();
   const maxW = Math.min(rect.width*0.86, 560);
-  canvas.style.width = Math.round(maxW)+'px';
-  canvas.style.height = Math.round(maxW * (320/560))+'px';
+  canvas.style.width = maxW+'px';
+  canvas.style.height = (maxW*(320/560))+'px';
 }
-window.addEventListener('resize', fitCanvas); fitCanvas();
+window.addEventListener('resize', fitCanvas);
+fitCanvas();
 
 </script>
-  <script>
-    /* ===============================
-       SIMPLE FLAPPY PIG GAME
-    =============================== */
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
 
-    let pig = { x:120, y:200, r:22, vy:0 };
-    let gravity = 0.45;
-    let jump = -7.8;
-    let clouds = [];
-    let frame = 0;
-    let gameOver = false;
-    let score = 0;
-
-    function resetGame(){
-      pig.y = 200;
-      pig.vy = 0;
-      clouds = [];
-      frame = 0;
-      score = 0;
-      gameOver = false;
-    }
-
-    function spawnCloud(){
-      let gap = 150;
-      let topH = Math.random()*200 + 40;
-      clouds.push({ x:720, top:topH, bottom:topH+gap, w:70 });
-    }
-
-    function drawPig(){
-      ctx.fillStyle = '#ffb7c5';
-      ctx.beginPath();
-      ctx.arc(pig.x, pig.y, pig.r, 0, Math.PI*2);
-      ctx.fill();
-    }
-
-    function drawCloud(c){
-      ctx.fillStyle = 'white';
-      ctx.fillRect(c.x, 0, c.w, c.top);
-      ctx.fillRect(c.x, c.bottom, c.w, 420-c.bottom);
-    }
-
-    function update(){
-      if(gameOver) return;
-
-      frame++;
-      pig.vy += gravity;
-      pig.y += pig.vy;
-
-      if(frame % 120 === 0) spawnCloud();
-
-      clouds.forEach(c=> c.x -= 2.8);
-
-      if(pig.y + pig.r > 420 || pig.y - pig.r < 0){
-        gameOver = true;
-      }
-
-      clouds.forEach(c=>{
-        if(pig.x + pig.r > c.x && pig.x - pig.r < c.x + c.w){
-          if(pig.y - pig.r < c.top || pig.y + pig.r > c.bottom){
-            gameOver = true;
-          }
-        }
-        if(c.x + c.w === pig.x) score++;
-      });
-
-      clouds = clouds.filter(c=> c.x > -100);
-    }
-
-    function render(){
-      ctx.clearRect(0,0,720,420);
-
-      ctx.fillStyle = '#d9ebc4';
-      ctx.fillRect(0,0,720,420);
-
-      clouds.forEach(drawCloud);
-      drawPig();
-
-      ctx.fillStyle = '#2b2b2b';
-      ctx.font = '20px Inter';
-      ctx.fillText('Score: '+score, 20, 30);
-
-      if(gameOver){
-        ctx.font = '38px Inter';
-        ctx.fillText('Game Over', 260, 200);
-        ctx.font = '18px Inter';
-        ctx.fillText('點擊重新開始', 295, 240);
-      }
-    }
-
-    function loop(){ update(); render(); requestAnimationFrame(loop); }
-    loop();
-
-    function flap(){ if(!gameOver){ pig.vy = jump; } else { resetGame(); }}
-
-    canvas.addEventListener('mousedown', flap);
-    window.addEventListener('keydown', e=>{ if(e.code==='Space') flap(); });
-  </script>
+  
 </body>
 </html>
