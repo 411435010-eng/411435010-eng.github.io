@@ -237,9 +237,9 @@ let pig = {
     x: 50,
     y: H / 2,
     radius: 15,
-    gravity: 0.6,
+    gravity: 0.45,
     velocity: 0,
-    lift: -10,
+    lift: -11,
     rotation: 0, // In radians
     score: 0
 };
@@ -247,7 +247,7 @@ let pig = {
 let obstacles = [];
 let gameRunning = false;
 let frameCount = 0;
-const OBSTACLE_GAP = 90; // Gap for the pig to pass through
+const OBSTACLE_GAP = 130; // Gap for the pig to pass through
 const OBSTACLE_SPACING = 150; // Spacing between obstacle pairs
 
 function drawPig() {
