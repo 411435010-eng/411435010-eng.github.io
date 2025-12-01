@@ -53,8 +53,8 @@
     .stage .bg-img{position:absolute;inset:0;background-image:url('/mnt/data/Gemini_Generated_Image_robm54robm54robm.png');background-size:cover;background-position:center;opacity:0.98;filter:grayscale(0.02) saturate(0.8)}
     .stage .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(241,243,224,0.65), rgba(241,243,224,0.85));}
 
-    /* pig (center decorative) */
-    .pig-deco{position:absolute;z-index:6;pointer-events:none}
+    /* pig (center decorative) - Adjusted size and position for canvas game */
+    .pig-deco{position:absolute;z-index:6;pointer-events:none; width:180px; height:140px; } 
 
     /* pig canvas */
     #pigGame{border-radius:12px;z-index:8}
@@ -70,6 +70,12 @@
     /* small responsive tweaks for tabs content */
     .tabs-content{margin-top:14px}
     .hidden{display:none}
+
+    /* Pig for Canvas (for better look on canvas) */
+    .pig-deco path, .pig-deco circle, .pig-deco ellipse {
+        /* Ensure no stroke or weird color inheritance on the decorative SVG */
+        stroke-width: 0;
+    }
   </style>
 </head>
 <body>
@@ -101,7 +107,6 @@
   </header>
 
   <main>
-    <!-- OVERVIEW -->
     <section id="overview" class="panel">
       <div class="hero">
         <div class="intro">
@@ -113,8 +118,7 @@
               <div class="bg-img" aria-hidden="true"></div>
               <div class="overlay" aria-hidden="true"></div>
 
-              <!-- decorative SVG pig (non-game) -->
-              <svg class="pig-deco" width="220" height="170" viewBox="0 0 300 240" style="left:50%;top:38%;transform:translate(-50%,-50%)">
+              <svg class="pig-deco" width="220" height="170" viewBox="0 0 300 240" style="left:50%;top:38%;transform:translate(-50%,-50%)" aria-hidden="true">
                 <g transform="translate(30,28)">
                   <ellipse cx="120" cy="86" rx="78" ry="56" fill="#ffdce0" stroke="#f0aeb8" stroke-width="2"/>
                   <circle cx="92" cy="98" r="8" fill="#ffd1d9"/>
@@ -124,11 +128,30 @@
                     <ellipse cx="140" cy="76" rx="6" ry="8"/>
                   </g>
                   <ellipse cx="124" cy="94" rx="20" ry="12" fill="#ffb6c1"/>
+                  <circle cx="116" cy="94" r="2" fill="#9b3e4b"/>
+                  <circle cx="132" cy="94" r="2" fill="#9b3e4b"/>
+                  
+                  <g transform="translate(98,46)">
+                    <path d="M10 2 q12 -8 24 2 q-10 4 -18 2 q-6 -2 -6 -4" fill="#A1BC98" stroke="#778873" stroke-width="0.8"/>
+                  </g>
+                  
+                  <g transform="translate(14,42)">
+                      <path d="M8 28 q-26 -8 -30 -20 q6 4 12 8 q10 8 22 14" fill="#fff"/>
+                  </g>
+                  <g transform="translate(206,38)">
+                      <path d="M0 28 q26 -8 30 -20 q-6 4 -12 8 q-10 8 -22 14" fill="#fff"/>
+                  </g>
+                  
+                  <path d="M40 116 q6 6 10 6 q-4 -4 -6 -8" fill="none" stroke="#f09aa7" stroke-width="3" stroke-linecap="round"/>
+                </g>
+                
+                <g transform="translate(0,0)" opacity="0.9">
+                  <ellipse cx="36" cy="42" rx="18" ry="8" fill="#D2DCB6"/>
+                  <ellipse cx="264" cy="52" rx="16" ry="6" fill="#D2DCB6"/>
                 </g>
               </svg>
 
-              <!-- canvas game (on top) -->
-              <canvas id="pigGame" width="560" height="320"></canvas>
+              <canvas id="pigGame" width="560" height="320" aria-label="Flappy Pig Game"></canvas>
             </div>
           </div>
 
@@ -161,7 +184,6 @@
       </div>
     </section>
 
-    <!-- JOURNAL COLLAGE -->
     <section id="repositories" class="panel hidden">
       <h2>Repositories</h2>
       <div class="cards">
@@ -171,7 +193,6 @@
       </div>
     </section>
 
-    <!-- CROCHET -->
     <section id="projects" class="panel hidden">
       <h2>Projects</h2>
       <div class="cards">
@@ -180,7 +201,6 @@
       </div>
     </section>
 
-    <!-- OTHER -->
     <section id="packages" class="panel hidden">
       <h2>Packages</h2>
       <div class="cards">
@@ -206,37 +226,234 @@ document.querySelectorAll('.navbtn').forEach(b=>{
   });
 });
 
-    const pigEl = document.querySelector('.pig');
-    const wingL = document.getElementById('wingL');
-    const wingR = document.getElementById('wingR');
+// --- Flappy Pig Game Logic (from HTML 1) ---
 
-    // boop: quick bounce
-    document.getElementById('boop').addEventListener('click', ()=>{
-      pigEl.animate([
-        {transform:'translateY(0)'},
-        {transform:'translateY(-28px)'},
-        {transform:'translateY(0)'}
-      ],{duration:520,easing:'cubic-bezier(.2,.9,.3,1)'});
-    });
+const canvas = document.getElementById('pigGame');
+const ctx = canvas.getContext('2d');
+const W = canvas.width;
+const H = canvas.height;
 
-    // toggle wings (pause flap animation)
-    let wingsOn = true;
-    document.getElementById('toggleWings').addEventListener('click', ()=>{
-      wingsOn = !wingsOn;
-      const nodes = document.querySelectorAll('.wing');
-      nodes.forEach(n=> n.style.animationPlayState = wingsOn? 'running' : 'paused');
-    });
+let pig = {
+    x: 50,
+    y: H / 2,
+    radius: 15,
+    gravity: 0.6,
+    velocity: 0,
+    lift: -10,
+    rotation: 0, // In radians
+    score: 0
+};
 
-    // respect prefers-reduced-motion
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      pigEl.style.animationPlayState = 'paused';
-      document.querySelectorAll('.wing').forEach(w=> w.style.animationPlayState='paused');
+let obstacles = [];
+let gameRunning = false;
+let frameCount = 0;
+const OBSTACLE_GAP = 90; // Gap for the pig to pass through
+const OBSTACLE_SPACING = 150; // Spacing between obstacle pairs
+
+function drawPig() {
+    ctx.save();
+    ctx.translate(pig.x, pig.y);
+    ctx.rotate(pig.rotation);
+    
+    // Draw pig (simplified for canvas)
+    ctx.fillStyle = '#ffdce0'; // Body
+    ctx.beginPath();
+    ctx.arc(0, 0, pig.radius, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.fillStyle = '#ffb6c1'; // Snout
+    ctx.beginPath();
+    ctx.ellipse(pig.radius * 0.7, 0, pig.radius * 0.5, pig.radius * 0.3, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#A1BC98'; // Match leaf hat as decorative touch
+    ctx.beginPath();
+    ctx.moveTo(0, -pig.radius);
+    ctx.bezierCurveTo(pig.radius*0.5, -pig.radius*1.5, pig.radius*1.2, -pig.radius*0.8, pig.radius*0.8, -pig.radius*0.4);
+    ctx.fill();
+
+    ctx.restore();
+}
+
+function updatePig() {
+    if (!gameRunning) return;
+
+    pig.velocity += pig.gravity;
+    pig.y += pig.velocity;
+
+    // Rotation based on velocity (for visual flair)
+    // Map velocity (-10 to 8) to rotation (-45 deg to 90 deg)
+    const maxVelDown = 8;
+    const maxVelUp = -10;
+    const maxRotDown = Math.PI / 2; // 90 deg
+    const maxRotUp = -Math.PI / 4; // -45 deg
+
+    if (pig.velocity > 0) {
+        pig.rotation = Math.min(maxRotDown, (pig.velocity / maxVelDown) * maxRotDown);
+    } else {
+        pig.rotation = Math.max(maxRotUp, (pig.velocity / maxVelUp) * maxRotUp);
     }
-  
+
+    // Ground check (Game Over)
+    if (pig.y + pig.radius > H) {
+        pig.y = H - pig.radius;
+        pig.velocity = 0;
+        endGame();
+    }
+    // Ceiling check
+    if (pig.y - pig.radius < 0) {
+        pig.y = pig.radius;
+        pig.velocity = 0;
+    }
+}
+
+function flap() {
+    if (!gameRunning) {
+        startGame();
+        return;
+    }
+    pig.velocity = pig.lift;
+}
+
+function generateObstacle() {
+    const minHeight = 50;
+    const maxHeight = H - OBSTACLE_GAP - minHeight;
+    const topHeight = Math.random() * (maxHeight - minHeight) + minHeight;
+
+    obstacles.push({
+        x: W,
+        topH: topHeight,
+        bottomH: H - topHeight - OBSTACLE_GAP,
+        width: 30,
+        scored: false
+    });
+}
+
+function drawObstacles() {
+    ctx.fillStyle = '#778873'; // Deep matcha accent
+    obstacles.forEach(obs => {
+        // Top "Cloud" pipe
+        ctx.beginPath();
+        ctx.rect(obs.x, 0, obs.width, obs.topH);
+        ctx.fill();
+
+        // Bottom "Cloud" pipe
+        ctx.beginPath();
+        ctx.rect(obs.x, H - obs.bottomH, obs.width, obs.bottomH);
+        ctx.fill();
+    });
+}
+
+function updateObstacles() {
+    if (!gameRunning) return;
+
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+        let obs = obstacles[i];
+        obs.x -= 3; // Obstacle speed
+
+        // Check for scoring
+        if (!obs.scored && obs.x < pig.x) {
+            pig.score++;
+            obs.scored = true;
+        }
+
+        // Check for collision
+        if (
+            pig.x + pig.radius > obs.x && pig.x - pig.radius < obs.x + obs.width &&
+            (pig.y - pig.radius < obs.topH || pig.y + pig.radius > H - obs.bottomH)
+        ) {
+            endGame();
+        }
+
+        // Remove off-screen obstacles
+        if (obs.x + obs.width < 0) {
+            obstacles.splice(i, 1);
+        }
+    }
+
+    // Generate new obstacle
+    if (frameCount % OBSTACLE_SPACING === 0) {
+        generateObstacle();
+    }
+}
+
+function drawScore() {
+    ctx.fillStyle = 'rgba(43,43,43,0.8)';
+    ctx.font = '24px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('SCORE: ' + pig.score, W / 2, 30);
+}
+
+function gameLoop() {
+    ctx.clearRect(0, 0, W, H);
+    
+    // Draw Game Area Overlay (if needed, currently using a single canvas)
+    
+    updatePig();
+    updateObstacles();
+    drawObstacles();
+    drawPig();
+    drawScore();
+
+    if (gameRunning) {
+        frameCount++;
+        requestAnimationFrame(gameLoop);
+    } else {
+        drawGameOver();
+    }
+}
+
+function drawGameOver() {
+    ctx.fillStyle = 'rgba(119,136,115,0.7)';
+    ctx.font = '48px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('GAME OVER', W / 2, H / 2 - 20);
+    
+    ctx.fillStyle = 'rgba(43,43,43,0.8)';
+    ctx.font = '28px Inter, sans-serif';
+    ctx.fillText('Final Score: ' + pig.score, W / 2, H / 2 + 30);
+}
+
+function resetGame() {
+    pig.y = H / 2;
+    pig.velocity = 0;
+    pig.rotation = 0;
+    pig.score = 0;
+    obstacles = [];
+    frameCount = 0;
+    gameRunning = false;
+    ctx.clearRect(0, 0, W, H); // Clear canvas
+    drawPig(); // Draw initial pig
+    drawScore();
+    // Optional: Draw a "Click to Start" message
+    ctx.fillStyle = 'rgba(43,43,43,0.8)';
+    ctx.font = '28px Inter, sans-serif';
+    ctx.fillText('Click to Start', W / 2, H / 2 + 30);
+}
+
+function startGame() {
+    if (gameRunning) return;
+    gameRunning = true;
+    flap(); // Start with a flap
+    gameLoop();
+}
+
+function endGame() {
+    gameRunning = false;
+}
+
+// Event Listeners
+document.getElementById('clickPig').addEventListener('click', flap);
+document.getElementById('resetGame').addEventListener('click', resetGame);
+canvas.addEventListener('click', flap);
+
+// Initialize the game state when the page loads
+resetGame();
+
+// --- End Flappy Pig Game Logic ---
+
+// --- Removed: The unused `boop` and `toggleWings` logic from HTML 1 is removed as requested. ---
+
 </script>
-
-
-
-  
 </body>
 </html>
