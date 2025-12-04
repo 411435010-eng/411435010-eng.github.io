@@ -311,7 +311,6 @@ function updatePig() {
     if (pig.y + pig.radius > H) {
         pig.y = H - pig.radius;
         pig.velocity = 0;
-        endGame();
     }
     // Ceiling check
     if (pig.y - pig.radius < 0) {
