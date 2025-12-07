@@ -20,19 +20,19 @@
     body{margin:0;font-family:Inter,Segoe UI,Roboto,system-ui,-apple-system,'Helvetica Neue',Arial;
       background: linear-gradient(180deg,var(--bg) 0%, #e9f0dd 70%); color:var(--dark); min-height:100vh;}
 
-    header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px; flex-wrap: wrap; gap: 10px;}
     .brand{display:flex;align-items:center;gap:12px}
     .logo{width:56px;height:56px;background:linear-gradient(135deg,var(--mint),var(--leaf));border-radius:14px;display:grid;place-items:center;box-shadow:0 8px 22px rgba(34,34,34,0.06)}
     .logo svg{width:40px;height:40px}
     h1{font-size:18px;margin:0;color:var(--deep)}
 
-    nav.topnav{display:flex;gap:12px;align-items:center}
+    nav.topnav{display:flex;gap:12px;align-items:center; flex-wrap: wrap;}
     nav.topnav .navbtn{background:transparent;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;color:var(--deep)}
     nav.topnav .navbtn.active{background:var(--leaf);color:white}
 
     main{padding:18px;max-width:1100px;margin:0 auto}
 
-    .hero{position:relative;display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:center}
+    .hero{position:relative;display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
     @media (max-width:880px){.hero{grid-template-columns:1fr;}.controls{order:2}}
 
     .intro{background:var(--card);padding:22px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
@@ -42,40 +42,45 @@
     .controls{padding:18px;background:linear-gradient(180deg,rgba(255,255,255,0.6), rgba(255,255,255,0.45));border-radius:12px;backdrop-filter:blur(6px)}
     .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--leaf);color:white;text-decoration:none;font-weight:600;border:none;cursor:pointer}
 
-    /* sky & clouds */
-    .sky{position:relative;height:520px;border-radius:14px;overflow:hidden;margin-top:18px;background:radial-gradient(circle at 20% 10%, rgba(255,255,255,0.6), transparent 20%), linear-gradient(180deg, rgba(255,255,255,0.4), transparent 40%)}
-    .cloud{position:absolute;background:rgba(255,255,255,0.95);border-radius:50px;opacity:0.95;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
-
-    /* central stage */
-    .stage-wrap{position:relative;display:flex;align-items:center;justify-content:center;height:100%}
-    .stage{position:relative;width:88%;max-width:820px;height:420px;border-radius:18px;display:grid;place-items:center;box-shadow:inset 0 -30px 60px rgba(0,0,0,0.02);overflow:hidden}
-    /* use the provided sweets image as background inside stage */
-    .stage .bg-img{position:absolute;inset:0;background-image:url('/mnt/data/Gemini_Generated_Image_robm54robm54robm.png');background-size:cover;background-position:center;opacity:0.98;filter:grayscale(0.02) saturate(0.8)}
+    /* stage styles */
+    .stage-wrap{position:relative;display:flex;align-items:center;justify-content:center;margin-top: 20px;}
+    .stage{position:relative;width:100%;max-width:820px; border-radius:18px;display:grid;place-items:center;box-shadow:inset 0 -30px 60px rgba(0,0,0,0.02);overflow:hidden; background-color: #fff;}
+    
+    /* Background placeholder if image fails */
+    .stage .bg-img{
+        position:absolute;inset:0;
+        background-color: #eef5e6; 
+        background-image:url('https://images.unsplash.com/photo-1579619623836-8a506f57dc62?q=80&w=1000&auto=format&fit=crop'); /* 替換為網路上的抹茶圖片範例 */
+        background-size:cover;background-position:center;opacity:0.98;filter:grayscale(0.02) saturate(0.8);
+    }
     .stage .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(241,243,224,0.65), rgba(241,243,224,0.85));}
 
-    /* pig (center decorative) - Adjusted size and position for canvas game */
-    .pig-deco{position:absolute;z-index:6;pointer-events:none; width:180px; height:140px; } 
+    /* pig decorative svg */
+    .pig-deco{position:absolute;z-index:6;pointer-events:none; left:50%;top:38%;transform:translate(-50%,-50%);} 
+    .pig-deco path, .pig-deco circle, .pig-deco ellipse {stroke-width: 0;}
 
-    /* pig canvas */
-    #pigGame{border-radius:12px;z-index:8}
+    /* pig canvas game */
+    #pigGame{border-radius:12px;z-index:8; max-width: 100%; height: auto;}
 
-    /* tabs/cards */
+    /* cards */
     .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
-    .card{background:var(--card);padding:16px;border-radius:12px}
+    .card{background:var(--card);padding:16px;border-radius:12px; transition: transform 0.2s;}
+    .card:hover{transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+    
+    /* Image in cards styles */
+    .card img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        display: block;
+        margin-top: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
 
     footer{padding:22px;text-align:center;color:var(--deep)}
-
     .follow-note{font-size:13px;color:rgba(43,43,43,0.7);margin-top:12px}
-
-    /* small responsive tweaks for tabs content */
     .tabs-content{margin-top:14px}
     .hidden{display:none}
-
-    /* Pig for Canvas (for better look on canvas) */
-    .pig-deco path, .pig-deco circle, .pig-deco ellipse {
-        /* Ensure no stroke or weird color inheritance on the decorative SVG */
-        stroke-width: 0;
-    }
   </style>
 </head>
 <body>
@@ -115,10 +120,11 @@
 
           <div class="stage-wrap">
             <div class="stage" id="stage">
+              <!-- 背景圖片已替換為網路資源，若要用自己的請參考下方說明 -->
               <div class="bg-img" aria-hidden="true"></div>
               <div class="overlay" aria-hidden="true"></div>
 
-              <svg class="pig-deco" width="220" height="170" viewBox="0 0 300 240" style="left:50%;top:38%;transform:translate(-50%,-50%)" aria-hidden="true">
+              <svg class="pig-deco" width="220" height="170" viewBox="0 0 300 240" aria-hidden="true">
                 <g transform="translate(30,28)">
                   <ellipse cx="120" cy="86" rx="78" ry="56" fill="#ffdce0" stroke="#f0aeb8" stroke-width="2"/>
                   <circle cx="92" cy="98" r="8" fill="#ffd1d9"/>
@@ -130,21 +136,17 @@
                   <ellipse cx="124" cy="94" rx="20" ry="12" fill="#ffb6c1"/>
                   <circle cx="116" cy="94" r="2" fill="#9b3e4b"/>
                   <circle cx="132" cy="94" r="2" fill="#9b3e4b"/>
-                  
                   <g transform="translate(98,46)">
                     <path d="M10 2 q12 -8 24 2 q-10 4 -18 2 q-6 -2 -6 -4" fill="#A1BC98" stroke="#778873" stroke-width="0.8"/>
                   </g>
-                  
                   <g transform="translate(14,42)">
                       <path d="M8 28 q-26 -8 -30 -20 q6 4 12 8 q10 8 22 14" fill="#fff"/>
                   </g>
                   <g transform="translate(206,38)">
                       <path d="M0 28 q26 -8 30 -20 q-6 4 -12 8 q-10 8 -22 14" fill="#fff"/>
                   </g>
-                  
                   <path d="M40 116 q6 6 10 6 q-4 -4 -6 -8" fill="none" stroke="#f09aa7" stroke-width="3" stroke-linecap="round"/>
                 </g>
-                
                 <g transform="translate(0,0)" opacity="0.9">
                   <ellipse cx="36" cy="42" rx="18" ry="8" fill="#D2DCB6"/>
                   <ellipse cx="264" cy="52" rx="16" ry="6" fill="#D2DCB6"/>
@@ -169,7 +171,7 @@
 
         <aside class="controls">
           <h3>互動控制</h3>
-          <p class="follow-note">點擊畫面或按下「點擊豬豬」讓豬旋轉並飛起，躲避抹茶雲朵獲得分數！</p>
+          <p class="follow-note">點擊畫面、按下空白鍵或「點擊豬豬」讓豬旋轉並飛起，躲避抹茶雲朵獲得分數！</p>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
             <button class="btn" id="clickPig">點擊豬豬</button>
             <button class="btn" id="resetGame">重新開始</button>
@@ -185,41 +187,25 @@
     </section>
 
     <section id="repositories" class="panel hidden">
-  <h2>JOURNAL COLLAGE</h2>
-  <div class="cards">
-    <div class="card"><h3>2025.03.20</h3>
-      <p><alt="..." img src="https://411435010-eng.github.io/20250323_154407.jpg" </p>
-      
-    </div>
+      <h2>JOURNAL COLLAGE</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>2025.03.20</h3>
+          <!-- 已修正：使用 raw.githubusercontent 連結並修復 HTML 標籤 -->
+          <img src="https://raw.githubusercontent.com/411435010-eng/411435010-eng.github.io/253bb3a22f1a7ee73643187dca2fbdd7f86f3725/20250412_234345.jpg" alt="Journal 2025.03.20">
+        </div>
 
-    <div class="card"><h3>2025.04.12</h3>
-      <p><alt="..." img src="https://github.com/411435010-eng/411435010-eng.github.io/blob/253bb3a22f1a7ee73643187dca2fbdd7f86f3725/20250412_234345.jpg" </p>
-      
-    </div>
+        <div class="card">
+          <h3>2025.04.12</h3>
+          <img src="https://raw.githubusercontent.com/411435010-eng/411435010-eng.github.io/253bb3a22f1a7ee73643187dca2fbdd7f86f3725/20250412_234345.jpg" alt="Journal 2025.04.12">
+        </div>
 
-    <div class="card"><h3>2025.04.24</h3>
-      <p><alt="..." img src="https://github.com/411435010-eng/411435010-eng.github.io/blob/253bb3a22f1a7ee73643187dca2fbdd7f86f3725/20250424_224525.jpg" </p>
-      
-    </div>
-  </div>
-</section><section id="repositories" class="panel hidden">
-  <h2>JOURNAL COLLAGE</h2>
-  <div class="cards">
-    <div class="card"><h3>2025.03.20</h3>
-      <p><alt="..." img src="https://raw.githubusercontent.com/411435010-eng/411435010-eng.github.io/70b1436c11a3c3deb809739891f54d306d7289c0/20250323_154407.jpg" </p>
-    </div>
-
-    <div class="card"><h3>2025.04.12</h3>
-      <p><alt="..." img src="https://raw.githubusercontent.com/411435010-eng/411435010-eng.github.io/253bb3a22f1a7ee73643187dca2fbdd7f86f3725/20250412_234345.jpg" </p>
-    </div>
-
-    <div class="card"><h3>2025.04.24</h3>
-      <p><alt="..." img src="https://raw.githubusercontent.com/411435010-eng/411435010-eng.github.io/253bb3a22f1a7ee73643187dca2fbdd7f86f3725/20250424_224525.jpg" </p>
-    </div>
-  </div>
-</section>
-
-
+        <div class="card">
+          <h3>2025.04.24</h3>
+          <img src="https://raw.githubusercontent.com/411435010-eng/411435010-eng.github.io/253bb3a22f1a7ee73643187dca2fbdd7f86f3725/20250424_224525.jpg" alt="Journal 2025.04.24">
+        </div>
+      </div>
+    </section>
 
     <section id="projects" class="panel hidden">
       <h2>CROCHET</h2>
@@ -254,12 +240,14 @@ document.querySelectorAll('.navbtn').forEach(b=>{
   });
 });
 
-// --- Flappy Pig Game Logic (from HTML 1) ---
+// --- Flappy Pig Game Logic ---
 
 const canvas = document.getElementById('pigGame');
 const ctx = canvas.getContext('2d');
-const W = canvas.width;
-const H = canvas.height;
+// Use logic coordinate system
+const W = 560;
+const H = 320;
+// Note: Canvas CSS handles the visual resizing, attribute handles resolution
 
 let pig = {
     x: 50,
@@ -267,34 +255,34 @@ let pig = {
     radius: 15,
     gravity: 0.45,
     velocity: 0,
-    lift: -11,
-    rotation: 0, // In radians
+    lift: -9, // Slightly Adjusted lift
+    rotation: 0, 
     score: 0
 };
 
 let obstacles = [];
 let gameRunning = false;
 let frameCount = 0;
-const OBSTACLE_GAP = 130; // Gap for the pig to pass through
-const OBSTACLE_SPACING = 150; // Spacing between obstacle pairs
+const OBSTACLE_GAP = 130;
+const OBSTACLE_SPACING = 150;
 
 function drawPig() {
     ctx.save();
     ctx.translate(pig.x, pig.y);
     ctx.rotate(pig.rotation);
     
-    // Draw pig (simplified for canvas)
-    ctx.fillStyle = '#ffdce0'; // Body
+    // Draw pig
+    ctx.fillStyle = '#ffdce0'; 
     ctx.beginPath();
     ctx.arc(0, 0, pig.radius, 0, Math.PI * 2);
     ctx.fill();
     
-    ctx.fillStyle = '#ffb6c1'; // Snout
+    ctx.fillStyle = '#ffb6c1';
     ctx.beginPath();
     ctx.ellipse(pig.radius * 0.7, 0, pig.radius * 0.5, pig.radius * 0.3, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = '#A1BC98'; // Match leaf hat as decorative touch
+    ctx.fillStyle = '#A1BC98';
     ctx.beginPath();
     ctx.moveTo(0, -pig.radius);
     ctx.bezierCurveTo(pig.radius*0.5, -pig.radius*1.5, pig.radius*1.2, -pig.radius*0.8, pig.radius*0.8, -pig.radius*0.4);
@@ -309,12 +297,10 @@ function updatePig() {
     pig.velocity += pig.gravity;
     pig.y += pig.velocity;
 
-    // Rotation based on velocity (for visual flair)
-    // Map velocity (-10 to 8) to rotation (-45 deg to 90 deg)
     const maxVelDown = 8;
     const maxVelUp = -10;
-    const maxRotDown = Math.PI / 2; // 90 deg
-    const maxRotUp = -Math.PI / 4; // -45 deg
+    const maxRotDown = Math.PI / 2;
+    const maxRotUp = -Math.PI / 4;
 
     if (pig.velocity > 0) {
         pig.rotation = Math.min(maxRotDown, (pig.velocity / maxVelDown) * maxRotDown);
@@ -322,19 +308,21 @@ function updatePig() {
         pig.rotation = Math.max(maxRotUp, (pig.velocity / maxVelUp) * maxRotUp);
     }
 
-    // Ground check (Game Over)
     if (pig.y + pig.radius > H) {
         pig.y = H - pig.radius;
         pig.velocity = 0;
     }
-    // Ceiling check
     if (pig.y - pig.radius < 0) {
         pig.y = pig.radius;
         pig.velocity = 0;
     }
 }
 
-function flap() {
+function flap(e) {
+    if(e && e.target && e.target.tagName !== 'CANVAS' && e.target.id !== 'clickPig' && e.code !== 'Space') return;
+    if(e && e.type === 'keydown' && e.code !== 'Space') return;
+    if(e) e.preventDefault(); // prevent space from scrolling
+
     if (!gameRunning) {
         startGame();
         return;
@@ -357,14 +345,11 @@ function generateObstacle() {
 }
 
 function drawObstacles() {
-    ctx.fillStyle = '#778873'; // Deep matcha accent
+    ctx.fillStyle = '#778873';
     obstacles.forEach(obs => {
-        // Top "Cloud" pipe
         ctx.beginPath();
         ctx.rect(obs.x, 0, obs.width, obs.topH);
         ctx.fill();
-
-        // Bottom "Cloud" pipe
         ctx.beginPath();
         ctx.rect(obs.x, H - obs.bottomH, obs.width, obs.bottomH);
         ctx.fill();
@@ -373,32 +358,23 @@ function drawObstacles() {
 
 function updateObstacles() {
     if (!gameRunning) return;
-
     for (let i = obstacles.length - 1; i >= 0; i--) {
         let obs = obstacles[i];
-        obs.x -= 3; // Obstacle speed
-
-        // Check for scoring
+        obs.x -= 3;
         if (!obs.scored && obs.x < pig.x) {
             pig.score++;
             obs.scored = true;
         }
-
-        // Check for collision
         if (
             pig.x + pig.radius > obs.x && pig.x - pig.radius < obs.x + obs.width &&
             (pig.y - pig.radius < obs.topH || pig.y + pig.radius > H - obs.bottomH)
         ) {
             endGame();
         }
-
-        // Remove off-screen obstacles
         if (obs.x + obs.width < 0) {
             obstacles.splice(i, 1);
         }
     }
-
-    // Generate new obstacle
     if (frameCount % OBSTACLE_SPACING === 0) {
         generateObstacle();
     }
@@ -413,15 +389,11 @@ function drawScore() {
 
 function gameLoop() {
     ctx.clearRect(0, 0, W, H);
-    
-    // Draw Game Area Overlay (if needed, currently using a single canvas)
-    
     updatePig();
     updateObstacles();
     drawObstacles();
     drawPig();
     drawScore();
-
     if (gameRunning) {
         frameCount++;
         requestAnimationFrame(gameLoop);
@@ -435,7 +407,6 @@ function drawGameOver() {
     ctx.font = '48px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('GAME OVER', W / 2, H / 2 - 20);
-    
     ctx.fillStyle = 'rgba(43,43,43,0.8)';
     ctx.font = '28px Inter, sans-serif';
     ctx.fillText('Final Score: ' + pig.score, W / 2, H / 2 + 30);
@@ -449,19 +420,19 @@ function resetGame() {
     obstacles = [];
     frameCount = 0;
     gameRunning = false;
-    ctx.clearRect(0, 0, W, H); // Clear canvas
-    drawPig(); // Draw initial pig
+    ctx.clearRect(0, 0, W, H);
+    drawPig();
     drawScore();
-    // Optional: Draw a "Click to Start" message
     ctx.fillStyle = 'rgba(43,43,43,0.8)';
     ctx.font = '28px Inter, sans-serif';
-    ctx.fillText('Click to Start', W / 2, H / 2 + 30);
+    ctx.textAlign = 'center';
+    ctx.fillText('Click / Space to Start', W / 2, H / 2 + 30);
 }
 
 function startGame() {
     if (gameRunning) return;
     gameRunning = true;
-    flap(); // Start with a flap
+    pig.velocity = pig.lift; 
     gameLoop();
 }
 
@@ -471,16 +442,11 @@ function endGame() {
 
 // Event Listeners
 document.getElementById('clickPig').addEventListener('click', flap);
-document.getElementById('resetGame').addEventListener('click', resetGame);
+document.getElementById('resetGame').addEventListener('click', (e)=>{ e.target.blur(); resetGame(); });
 canvas.addEventListener('click', flap);
+window.addEventListener('keydown', flap);
 
-// Initialize the game state when the page loads
 resetGame();
-
-// --- End Flappy Pig Game Logic ---
-
-// --- Removed: The unused `boop` and `toggleWings` logic from HTML 1 is removed as requested. ---
-
 </script>
 </body>
 </html>
